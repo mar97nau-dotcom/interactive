@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор отпускных и МРОТ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F5FAF5;
+            --primary-green: #2E7D32;
+            --primary-green-dark: #1B5E20;
+            --primary-green-light: #E8F5E9;
+            --accent-green: #4CAF50;
+            --text-deep: #1A3A1A;
+            --text-secondary: #5A6B5A;
+            --status-ok-bg: #E8F5E9;
+            --status-ok-text: #2E7D32;
+            --status-warn-bg: #FFF3E0;
+            --status-warn-text: #E65100;
+            --status-empty-bg: #F5F5F5;
+            --status-empty-text: #9E9E9E;
+            --border-color: #C8E6C9;
+            --card-bg: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-deep);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.08);
+            width: 100%;
+            max-width: 520px;
+            padding: 32px;
+            border-top: 4px solid var(--primary-green);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #FFFFFF;
+            color: var(--text-deep);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary-green);
+            background-color: var(--primary-green-light);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .input-wrapper .suffix {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 14px;
+        }
+
+        .row .input-group {
+            flex: 1;
+        }
+
+        .optional-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .optional-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-green);
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--text-deep);
+            cursor: pointer;
+            margin: 0;
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 400;
+        }
+
+        .conditional-inputs {
+            display: none;
+            margin-top: 14px;
+            padding: 14px;
+            background-color: var(--primary-green-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .conditional-inputs.visible {
+            display: block;
+        }
+
+        .result-container {
+            margin-top: 28px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .result-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-badge {
+            padding: 14px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .status-empty {
+            background-color: var(--status-empty-bg);
+            color: var(--status-empty-text);
+        }
+
+        .status-ok {
+            background-color: var(--status-ok-bg);
+            color: var(--status-ok-text);
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .status-warn {
+            background-color: var(--status-warn-bg);
+            color: var(--status-warn-text);
+            border: 1px solid rgba(230, 81, 0, 0.2);
+        }
+
+        .calculation-details {
+            background-color: var(--primary-green-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 14px;
+            border: 1px solid var(--border-color);
+        }
+
+        .calculation-details h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calculation-step {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-deep);
+            margin-bottom: 8px;
+        }
+
+        .calculation-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .calculation-step strong {
+            color: var(--primary-green-dark);
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background-color: #FFFFFF;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary-green);
+            margin: 8px 0;
+            font-size: 12px;
+            color: var(--text-deep);
+        }
+
+        @media (max-width: 480px) {
+            .calculator-card {
+                padding: 24px;
+            }
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <div class="header">
+        <h1>Проверка отпускных на соответствие МРОТ</h1>
+        <p>Расчет по правилам постановления Правительства от 24.04.2025 № 540</p>
+    </div>
+
+    <div class="input-group">
+        <label for="mrot">МРОТ (федеральный или региональный)</label>
+        <div class="input-wrapper">
+            <input type="number" id="mrot" value="27093" min="0" step="1">
+            <span class="suffix">₽</span>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label for="avgSalary">Средний месячный заработок за расчетный период</label>
+        <div class="input-wrapper">
+            <input type="number" id="avgSalary" placeholder="0" min="0" step="0.01">
+            <span class="suffix">₽</span>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label for="vacationDays">Количество календарных дней отпуска</label>
+        <div class="input-wrapper">
+            <input type="number" id="vacationDays" placeholder="28" min="1" step="1">
+            <span class="suffix">дн.</span>
+        </div>
+    </div>
+
+    <div class="optional-section">
+        <h3>Особые случаи (необязательно)</h3>
+        
+        <div class="checkbox-group">
+            <input type="checkbox" id="hasPartTime">
+            <label for="hasPartTime">Сотрудник работает на неполной ставке</label>
+        </div>
+
+        <div class="conditional-inputs" id="partTimeInputs">
+            <div class="input-group">
+                <label for="workRate">Ставка сотрудника</label>
+                <div class="input-wrapper">
+                    <input type="number" id="workRate" value="0.5" min="0.01" max="1" step="0.01">
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="hasMixedRate">
+                <label for="hasMixedRate">В расчетном периоде менялась ставка</label>
+            </div>
+
+            <div class="conditional-inputs" id="mixedRateInputs">
+                <div class="row">
+                    <div class="input-group">
+                        <label for="partTimeMonths">Месяцев на неполной ставке</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="partTimeMonths" value="7" min="0" max="12" step="1">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="fullTimeMonths">Месяцев на полной ставке</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="fullTimeMonths" value="5" min="0" max="12" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="hasRegionalCoeff">
+            <label for="hasRegionalCoeff">Действует районный коэффициент</label>
+        </div>
+
+        <div class="conditional-inputs" id="regionalCoeffInputs">
+            <div class="input-group">
+                <label for="regionalCoeff">Районный коэффициент</label>
+                <div class="input-wrapper">
+                    <input type="number" id="regionalCoeff" value="1.15" min="1" step="0.01">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="result-container" id="resultContainer">
+        <div class="status-badge status-empty" id="statusBadge">
+            Введите данные для расчета
+        </div>
+        <div id="calculationDetails" class="calculation-details" style="display: none;">
+            <h4>Расчет</h4>
+            <div id="calculationSteps"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const mrotInput = document.getElementById('mrot');
+    const avgSalaryInput = document.getElementById('avgSalary');
+    const vacationDaysInput = document.getElementById('vacationDays');
+    const hasPartTimeCheckbox = document.getElementById('hasPartTime');
+    const workRateInput = document.getElementById('workRate');
+    const hasMixedRateCheckbox = document.getElementById('hasMixedRate');
+    const partTimeMonthsInput = document.getElementById('partTimeMonths');
+    const fullTimeMonthsInput = document.getElementById('fullTimeMonths');
+    const hasRegionalCoeffCheckbox = document.getElementById('hasRegionalCoeff');
+    const regionalCoeffInput = document.getElementById('regionalCoeff');
+    
+    const resultContainer = document.getElementById('resultContainer');
+    const statusBadge = document.getElementById('statusBadge');
+    const calculationDetails = document.getElementById('calculationDetails');
+    const calculationSteps = document.getElementById('calculationSteps');
+
+    const partTimeInputs = document.getElementById('partTimeInputs');
+    const mixedRateInputs = document.getElementById('mixedRateInputs');
+    const regionalCoeffInputs = document.getElementById('regionalCoeffInputs');
+
+    function formatNumber(num) {
+        return num.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function toggleConditionalInputs() {
+        if (hasPartTimeCheckbox.checked) {
+            partTimeInputs.classList.add('visible');
+        } else {
+            partTimeInputs.classList.remove('visible');
+            hasMixedRateCheckbox.checked = false;
+            mixedRateInputs.classList.remove('visible');
+        }
+
+        if (hasMixedRateCheckbox.checked) {
+            mixedRateInputs.classList.add('visible');
+        } else {
+            mixedRateInputs.classList.remove('visible');
+        }
+
+        if (hasRegionalCoeffCheckbox.checked) {
+            regionalCoeffInputs.classList.add('visible');
+        } else {
+            regionalCoeffInputs.classList.remove('visible');
+        }
+    }
+
+    function calculate() {
+        const mrot = parseFloat(mrotInput.value) || 0;
+        const avgSalary = parseFloat(avgSalaryInput.value) || 0;
+        const vacationDays = parseFloat(vacationDaysInput.value) || 0;
+
+        if (avgSalary > 0 && vacationDays > 0) {
+            resultContainer.classList.add('visible');
+        } else {
+            resultContainer.classList.remove('visible');
+            calculationDetails.style.display = 'none';
+            return;
+        }
+
+        if (mrot <= 0) {
+            statusBadge.className = 'status-badge status-empty';
+            statusBadge.textContent = 'Укажите МРОТ';
+            calculationDetails.style.display = 'none';
+            return;
+        }
+
+        if (vacationDays <= 0) {
+            statusBadge.className = 'status-badge status-empty';
+            statusBadge.textContent = 'Укажите дни отпуска';
+            calculationDetails.style.display = 'none';
+            return;
+        }
+
+        const needsMrotCalculation = avgSalary < mrot;
+        let steps = [];
+        let finalResult = 0;
+
+        if (!needsMrotCalculation) {
+            const avgDailyEarnings = avgSalary / 29.3;
+            finalResult = avgDailyEarnings * vacationDays;
+            
+            steps.push(`<div class="calculation-step">Средний месячный заработок: <strong>${formatNumber(avgSalary)} ₽</strong></div>`);
+            steps.push(`<div class="calculation-step">МРОТ: <strong>${formatNumber(mrot)} ₽</strong></div>`);
+            steps.push(`<div class="calculation-step">Заработок ≥ МРОТ, считаем из фактического заработка</div>`);
+            steps.push(`<div class="formula">СДЗ = ${formatNumber(avgSalary)} / 29,3 = ${formatNumber(avgDailyEarnings)} ₽/дн.</div>`);
+            steps.push(`<div class="formula">Отпускные = ${formatNumber(avgDailyEarnings)} × ${vacationDays} = <strong>${formatNumber(finalResult)} ₽</strong></div>`);
+
+            statusBadge.className = 'status-badge status-ok';
+            statusBadge.textContent = 'Отпускные рассчитаны из фактического заработка';
+        } else {
+            let adjustedMrot = mrot;
+            let avgDailyFromMrot = 0;
+
+            steps.push(`<div class="calculation-step">Средний месячный заработок: <strong>${formatNumber(avgSalary)} ₽</strong></div>`);
+            steps.push(`<div class="calculation-step">МРОТ: <strong>${formatNumber(mrot)} ₽</strong></div>`);
+            steps.push(`<div class="calculation-step">Заработок < МРОТ, считаем отпускные из МРОТ</div>`);
+
+            if (hasRegionalCoeffCheckbox.checked) {
+                const regionalCoeff = parseFloat(regionalCoeffInput.value) || 1;
+                adjustedMrot = mrot * regionalCoeff;
+                steps.push(`<div class="calculation-step">Районный коэффициент: <strong>${regionalCoeff}</strong></div>`);
+                steps.push(`<div class="formula">МРОТ с РК = ${formatNumber(mrot)} × ${regionalCoeff} = ${formatNumber(adjustedMrot)} ₽</div>`);
+            }
+
+            if (hasPartTimeCheckbox.checked) {
+                if (hasMixedRateCheckbox.checked) {
+                    const partTimeMonths = parseFloat(partTimeMonthsInput.value) || 0;
+                    const fullTimeMonths = parseFloat(fullTimeMonthsInput.value) || 0;
+                    const workRate = parseFloat(workRateInput.value) || 0.5;
+                    
+                    const weightedRate = (workRate * partTimeMonths + fullTimeMonths) / 12;
+                    avgDailyFromMrot = (adjustedMrot * weightedRate) / 29.3;
+                    
+                    steps.push(`<div class="calculation-step">В расчетном периоде: ${partTimeMonths} мес. на ставке ${workRate}, ${fullTimeMonths} мес. на полной ставке</div>`);
+                    steps.push(`<div class="formula">Средневзвешенная ставка = (${workRate} × ${partTimeMonths} + ${fullTimeMonths}) / 12 = ${weightedRate.toFixed(4)}</div>`);
+                    steps.push(`<div class="formula">СДЗ из МРОТ = ${formatNumber(adjustedMrot)} × ${weightedRate.toFixed(4)} / 29,3 = ${formatNumber(avgDailyFromMrot)} ₽/дн.</div>`);
+                } else {
+                    const workRate = parseFloat(workRateInput.value) || 0.5;
+                    avgDailyFromMrot = (adjustedMrot / 29.3) * workRate;
+                    
+                    steps.push(`<div class="calculation-step">Ставка сотрудника: <strong>${workRate}</strong></div>`);
+                    steps.push(`<div class="formula">СДЗ из МРОТ = (${formatNumber(adjustedMrot)} / 29,3) × ${workRate} = ${formatNumber(avgDailyFromMrot)} ₽/дн.</div>`);
+                }
+            } else {
+                avgDailyFromMrot = adjustedMrot / 29.3;
+                steps.push(`<div class="formula">СДЗ из МРОТ = ${formatNumber(adjustedMrot)} / 29,3 = ${formatNumber(avgDailyFromMrot)} ₽/дн.</div>`);
+            }
+
+            finalResult = avgDailyFromMrot * vacationDays;
+            steps.push(`<div class="formula">Отпускные = ${formatNumber(avgDailyFromMrot)} × ${vacationDays} = <strong class="highlight">${formatNumber(finalResult)} ₽</strong></div>`);
+
+            statusBadge.className = 'status-badge status-warn';
+            statusBadge.textContent = 'Отпускные рассчитаны из МРОТ';
+        }
+
+        calculationSteps.innerHTML = steps.join('');
+        calculationDetails.style.display = 'block';
+    }
+
+    [mrotInput, avgSalaryInput, vacationDaysInput, workRateInput, 
+     partTimeMonthsInput, fullTimeMonthsInput, regionalCoeffInput].forEach(input => {
+        input.addEventListener('input', calculate);
+    });
+
+    [hasPartTimeCheckbox, hasMixedRateCheckbox, hasRegionalCoeffCheckbox].forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            toggleConditionalInputs();
+            calculate();
+        });
+    });
+
+    toggleConditionalInputs();
+    resultContainer.classList.remove('visible');
+</script>
+
+</body>
+</html>
