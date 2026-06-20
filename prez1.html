@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Презентация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            padding: 24px;
+        }
+
+        .slider-wrapper {
+            width: 400px;
+            height: 200px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .arrows {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 5;
+            padding: 0 4px;
+        }
+
+        .arrow-left,
+        .arrow-right {
+            pointer-events: auto;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .arrow-left:hover:not(.slick-disabled),
+        .arrow-right:hover:not(.slick-disabled) {
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transform: scale(1.05);
+        }
+
+        .arrow-left.slick-disabled,
+        .arrow-right.slick-disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .arrow-left svg {
+            transform: rotate(180deg);
+        }
+
+        .arrow-right svg {
+            transform: rotate(0deg);
+        }
+
+        .arrow-left svg,
+        .arrow-right svg {
+            width: 12px;
+            height: 20px;
+        }
+
+        .main-slider {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slick-list {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slick-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .slick-slide {
+            flex: 0 0 100%;
+            height: 100%;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            padding: 20px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #ffffff;
+        }
+
+        .slide-text__title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0a1e2f;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        @media (max-width: 420px) {
+            .slider-wrapper {
+                width: 100%;
+                height: 200px;
+                border-radius: 12px;
+            }
+            .container { padding: 16px 20px; }
+            .slide-text__title { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="slider-wrapper">
+    <div class="main-content">
+        <!-- Стрелки навигации -->
+        <div class="arrows">
+            <div class="arrow-left" id="arrowLeft">
+                <svg width="20" height="33" viewBox="0 0 20 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 2L16.5 16.5L2 31.5" stroke="#14927F" stroke-width="4"/>
+                </svg>
+            </div>
+            <div class="arrow-right" id="arrowRight">
+                <svg width="20" height="33" viewBox="0 0 20 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 2L16.5 16.5L2 31.5" stroke="#14927F" stroke-width="4"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Основной слайдер -->
+        <div class="main-slider" id="mainSlider">
+            <div class="slick-list">
+                <div class="slick-track" id="mainTrack">
+                    <!-- Слайд 1 -->
+                    <div class="slick-slide">
+                        <div class="container">
+                            <div class="slide-text">
+                                <div class="slide-text__body">
+                                    <div class="slide-text__content">
+                                        <h2 class="slide-text__title">1. Перечень объектов имущества, которые должны учитываться как материальные запасы</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Слайд 2 -->
+                    <div class="slick-slide">
+                        <div class="container">
+                            <div class="slide-text">
+                                <div class="slide-text__body">
+                                    <div class="slide-text__content">
+                                        <h2 class="slide-text__title">2. Правила учета оконечных устройств во внутренних системах здания</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Слайд 3 -->
+                    <div class="slick-slide">
+                        <div class="container">
+                            <div class="slide-text">
+                                <div class="slide-text__body">
+                                    <div class="slide-text__content">
+                                        <h2 class="slide-text__title">3. Формы документов, которые Минфин определил в методичках как «документ утвержденный учетной политикой»</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Слайд 4 -->
+                    <div class="slick-slide">
+                        <div class="container">
+                            <div class="slide-text">
+                                <div class="slide-text__body">
+                                    <div class="slide-text__content">
+                                        <h2 class="slide-text__title">4. Формы документов для матзапасов, которые необходимо разработать самостоятельно</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Слайд 5 -->
+                    <div class="slick-slide">
+                        <div class="container">
+                            <div class="slide-text">
+                                <div class="slide-text__body">
+                                    <div class="slide-text__content">
+                                        <h2 class="slide-text__title">5. Срок проведения документов в конце месяца, если срок сдачи отчетности раньше предельной даты закрытия регистров учета</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const totalSlides = 5;
+        let currentIndex = 0;
+
+        const mainTrack = document.getElementById('mainTrack');
+        const arrowLeft = document.getElementById('arrowLeft');
+        const arrowRight = document.getElementById('arrowRight');
+
+        function updateSlider(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            currentIndex = index;
+
+            mainTrack.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+
+            arrowLeft.classList.toggle('slick-disabled', currentIndex === 0);
+            arrowRight.classList.toggle('slick-disabled', currentIndex === totalSlides - 1);
+        }
+
+        arrowLeft.addEventListener('click', function() {
+            if (currentIndex > 0) updateSlider(currentIndex - 1);
+        });
+
+        arrowRight.addEventListener('click', function() {
+            if (currentIndex < totalSlides - 1) updateSlider(currentIndex + 1);
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                updateSlider(currentIndex - 1);
+                e.preventDefault();
+            } else if (e.key === 'ArrowRight' && currentIndex < totalSlides - 1) {
+                updateSlider(currentIndex + 1);
+                e.preventDefault();
+            }
+        });
+
+        updateSlider(0);
+    })();
+</script>
+
+</body>
+</html>
