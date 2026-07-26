@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>План внедрения внутреннего контроля</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f5f3f0;
+            min-height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.03);
+            padding: 2.2rem 2.5rem 2.8rem;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 0.3rem;
+        }
+
+        .subhead {
+            color: #5e5a55;
+            font-size: 0.95rem;
+            border-left: 4px solid #c9a84c;
+            padding-left: 16px;
+            background: #fcf9f4;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+            margin-bottom: 1.8rem;
+        }
+
+        .subhead strong {
+            color: #2f2a22;
+        }
+
+        .subhead .hint {
+            display: inline-block;
+            background: #f0ece4;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #5a554c;
+            margin-left: 8px;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 850px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .step-group {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ece8e2;
+            padding-bottom: 18px;
+        }
+
+        .step-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .step-header input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #c9a84c;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .step-header label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e1e1e;
+            cursor: pointer;
+        }
+
+        .step-header .badge {
+            background: #eae4db;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #4d4841;
+            font-weight: 500;
+            margin-left: auto;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .step-header .badge .tooltip {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: #2f2a22;
+            color: #f5f3f0;
+            font-weight: 400;
+            font-size: 0.7rem;
+            padding: 6px 14px;
+            border-radius: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .step-header .badge .tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            right: 12px;
+            border: 6px solid transparent;
+            border-bottom-color: #2f2a22;
+        }
+
+        .step-header .badge:hover .tooltip {
+            display: block;
+        }
+
+        .step-body {
+            padding-left: 34px;
+            color: #3d3a34;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .step-body.open {
+            display: block;
+        }
+
+        .step-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-body ul li {
+            padding: 3px 0 3px 18px;
+            position: relative;
+        }
+
+        .step-body ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #c9a84c;
+            font-weight: bold;
+        }
+
+        .step-body .result {
+            margin-top: 8px;
+            padding: 8px 14px;
+            background: #f8f5ef;
+            border-radius: 10px;
+            border-left: 3px solid #c9a84c;
+            font-weight: 500;
+            color: #2f2a22;
+            font-size: 0.85rem;
+        }
+
+        .date-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0 4px 34px;
+            flex-wrap: wrap;
+        }
+
+        .date-row label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #3d3a34;
+        }
+
+        .date-row input[type="date"] {
+            padding: 6px 12px;
+            border-radius: 40px;
+            border: 1px solid #d6cec0;
+            background: white;
+            font-size: 0.85rem;
+            color: #1c1a17;
+            outline: none;
+            transition: 0.1s;
+            min-width: 150px;
+        }
+
+        .date-row input[type="date"]:focus {
+            border-color: #c9a84c;
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+        }
+
+        .date-row .days-hint {
+            font-size: 0.8rem;
+            color: #7a756d;
+            background: #f0ece4;
+            padding: 2px 12px;
+            border-radius: 40px;
+        }
+
+        .date-row .days-hint.warning {
+            background: #f8e9d0;
+            color: #7a5d2e;
+        }
+
+        .date-row .days-hint.danger {
+            background: #f7e0da;
+            color: #873d2c;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #c9a84c;
+            color: #1e1e1e;
+        }
+
+        .btn-primary:hover {
+            background: #b8973a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -8px rgba(201, 168, 76, 0.35);
+        }
+
+        .btn-secondary {
+            background: #f0ece4;
+            color: #3d3a34;
+            border: 1px solid #d9d0c1;
+        }
+
+        .btn-secondary:hover {
+            background: #e5dfd5;
+        }
+
+        .plan-output {
+            background: #fcf9f4;
+            border-radius: 28px;
+            padding: 1.8rem 2rem;
+            border: 1px solid #eae3d7;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .plan-output.visible {
+            display: block;
+        }
+
+        .plan-output h2 {
+            font-size: 1.3rem;
+            color: #1e1e1e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .plan-output h2 .plan-badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #eae4db;
+            padding: 2px 16px;
+            border-radius: 40px;
+            color: #4d4841;
+        }
+
+        .plan-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ece8e2;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+        }
+
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+
+        .plan-item .num {
+            font-weight: 700;
+            color: #c9a84c;
+            min-width: 28px;
+            font-size: 0.9rem;
+        }
+
+        .plan-item .task {
+            flex: 1;
+            color: #1e1e1e;
+            font-size: 0.95rem;
+        }
+
+        .plan-item .date {
+            color: #5f5a52;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            background: #f0ece4;
+            padding: 2px 14px;
+            border-radius: 40px;
+        }
+
+        .plan-item .days-left {
+            font-size: 0.8rem;
+            color: #7a756d;
+            background: #e8e3da;
+            padding: 2px 10px;
+            border-radius: 40px;
+        }
+
+        .plan-item .days-left.warning {
+            background: #f8e9d0;
+            color: #7a5d2e;
+        }
+
+        .plan-item .days-left.danger {
+            background: #f7e0da;
+            color: #873d2c;
+        }
+
+        .plan-footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e2dad0;
+            font-size: 0.9rem;
+            color: #5a554c;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+        }
+
+        .plan-footer .highlight {
+            color: #c9a84c;
+            font-weight: 600;
+        }
+
+        .empty-plan {
+            color: #7a756d;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 1rem;
+        }
+
+        .time-warning {
+            background: #fdf0e8;
+            border: 1px solid #e8c8b8;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .time-warning.visible {
+            display: block;
+        }
+
+        .time-warning strong {
+            color: #b34a3c;
+        }
+
+        .time-info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 28px;
+            background: #f8f5ef;
+            border-radius: 16px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eae3d7;
+            align-items: center;
+        }
+
+        .time-info-bar .label {
+            font-weight: 500;
+            color: #2f2a22;
+            font-size: 0.9rem;
+        }
+
+        .time-info-bar .value {
+            font-weight: 600;
+            color: #1e1e1e;
+            font-size: 0.95rem;
+        }
+
+        .time-info-bar .value.gold {
+            color: #c9a84c;
+        }
+
+        .legend-hint {
+            font-size: 0.8rem;
+            color: #7a756d;
+            background: #f8f5ef;
+            padding: 6px 16px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ece8e2;
+        }
+
+        .legend-hint .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 40px;
+            background: #eae4db;
+            border: 1px solid #d6cec0;
+        }
+
+        .legend-hint .dot.recommended {
+            background: #eae4db;
+            border-color: #c9a84c;
+        }
+
+        @media (max-width: 700px) {
+            .card {
+                padding: 1.6rem;
+            }
+            .step-body {
+                padding-left: 20px;
+            }
+            .date-row {
+                margin-left: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .plan-item {
+                flex-wrap: wrap;
+            }
+            .plan-item .date {
+                margin-left: 44px;
+            }
+            .actions {
+                flex-direction: column;
+            }
+            .btn {
+                justify-content: center;
+            }
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            .time-info-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .step-header .badge .tooltip {
+                white-space: normal;
+                min-width: 180px;
+                right: -10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>
+                <span>📋 План внедрения внутреннего контроля</span>
+            </h1>
+            <div class="subhead">
+                <strong>Пошаговый алгоритм</strong> для вашего учреждения.
+                <span class="hint">⏱️ Сроки в плашках — рекомендуемые</span>
+            </div>
+
+            <!-- Информация о времени -->
+            <div class="time-info-bar">
+                <span><span class="label">📅 Период:</span> <span class="value" id="periodInfo">—</span></span>
+                <span><span class="label">📆 Всего дней:</span> <span class="value gold" id="totalDaysInfo">—</span></span>
+                <span><span class="label">✅ Свободно:</span> <span class="value gold" id="freeDaysInfo">—</span></span>
+                <span><span class="label">📊 Выбрано задач:</span> <span class="value" id="selectedTasksInfo">0</span></span>
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend-hint">
+                <span class="dot recommended"></span>
+                <span>Рекомендуемый срок выполнения (можно изменить в календаре)</span>
+            </div>
+
+            <!-- Калькулятор дней -->
+            <div style="background:#f8f5ef; border-radius:20px; padding:16px 20px; margin-bottom:24px; border:1px solid #eae3d7;">
+                <div style="display:flex; flex-wrap:wrap; gap:12px 24px; align-items:center;">
+                    <span style="font-weight:600; color:#2f2a22; font-size:0.95rem;">📊 Ваша загруженность (дней):</span>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px 16px;">
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Выходные: <input type="number" id="weekends" value="46" min="0" max="100" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Текучка: <input type="number" id="otherTasks" value="54" min="0" max="107" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Отпуск: <input type="number" id="vacation" value="0" min="0" max="31" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Отчётность за 9 месяцев: <input type="number" id="reporting" value="8" min="0" max="30" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Инвентаризация: <input type="number" id="inventory" value="10" min="0" max="60" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Закрытие года: <input type="number" id="yearClose" value="10" min="0" max="40" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                            Корректировка учетной политики: <input type="number" id="accountingPolicy" value="3" min="0" max="20" style="width:60px; padding:4px 6px; border-radius:30px; border:1px solid #d6cec0; text-align:center;">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Шаги алгоритма -->
+            <div class="two-columns">
+                <div>
+                    <!-- Шаг 1 -->
+                    <div class="step-group" data-step="1">
+                        <div class="step-header">
+                            <input type="checkbox" id="step1" checked>
+                            <label for="step1">Экспресс-диагностика текущего контроля</label>
+                            <span class="badge">
+                                31 авг
+                                <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            </span>
+                        </div>
+                        <div class="step-body open" id="body1">
+                            <ul>
+                                <li>Оцените контрольные процедуры на ключевых участках (учет матзапасов, работа с первичкой, сверка расчётов)</li>
+                                <li>Проведите опрос подразделений и выборочную проверку документов за последние 3–6 месяцев, чтобы выявить типовые ошибки (например, задержки авансовых отчётов, формальные инвентаризации)</li>
+                            </ul>
+                            <div class="result">✅ Результат: перечень слабых мест и зон повышенного риска. Это ваша база для дальнейшей работы</div>
+                            <div class="date-row">
+                                <label>📅 Ваш срок:</label>
+                                <input type="date" id="date1">
+                                <span class="days-hint" id="hint1">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Шаг 2 -->
+                    <div class="step-group" data-step="2">
+                        <div class="step-header">
+                            <input type="checkbox" id="step2" checked>
+                            <label for="step2">Распределение ответственности и доступов</label>
+                            <span class="badge">
+                                30 сен
+                                <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            </span>
+                        </div>
+                        <div class="step-body" id="body2">
+                            <ul>
+                                <li>Назначьте ответственных за контрольные процедуры</li>
+                                <li>Утвердите матрицу ролей (кто что проверяет и согласовывает)</li>
+                                <li>Пропишите разграничение прав доступа к учетным системам</li>
+                                <li>Закрепите ответственных, кто будет проводить контроль по каждому риску (кто проверяет первичку, кто контролирует лимиты, кто ведёт претензионную работу)</li>
+                            </ul>
+                            <div class="result">✅ Результат: приказ о назначении ответственных и матрица ответственности, в которой будет четко зафиксировано, кто за что отвечает</div>
+                            <div class="date-row">
+                                <label>📅 Ваш срок:</label>
+                                <input type="date" id="date2">
+                                <span class="days-hint" id="hint2">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Шаг 3 -->
+                    <div class="step-group" data-step="3">
+                        <div class="step-header">
+                            <input type="checkbox" id="step3" checked>
+                            <label for="step3">Доработка регламентов под новые требования</label>
+                            <span class="badge">
+                                31 окт
+                                <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            </span>
+                        </div>
+                        <div class="step-body" id="body3">
+                            <ul>
+                                <li>Приведите внутренние регламенты и контрольные процедуры в соответствие с новыми стандартами и учетом электронного документооборота</li>
+                                <li>Отработайте на одном участке (например, учёт матзапасов) контрольные процедуры по выявленным рискам, зафиксируйте отклонения и доработайте регламенты</li>
+                            </ul>
+                            <div class="result">✅ Результат: Обновлённые регламенты с прописанными шагами контроля, сроками и формами фиксации результатов</div>
+                            <div class="date-row">
+                                <label>📅 Ваш срок:</label>
+                                <input type="date" id="date3">
+                                <span class="days-hint" id="hint3">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- Шаг 4 -->
+                    <div class="step-group" data-step="4">
+                        <div class="step-header">
+                            <input type="checkbox" id="step4" checked>
+                            <label for="step4">Обучение сотрудников</label>
+                            <span class="badge">
+                                30 ноя
+                                <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            </span>
+                        </div>
+                        <div class="step-body" id="body4">
+                            <ul>
+                                <li>Проведите обучение сотрудников новым процедурам</li>
+                                <li>Запустите пилотную проверку на одном участке контроля</li>
+                                <li>Соберите обратную связь, зафиксируйте сложности и точки доработки</li>
+                            </ul>
+                            <div class="result">✅ Результат: выводы и списки корректировок – система доработана с учетом реальных рабочих ситуаций</div>
+                            <div class="date-row">
+                                <label>📅 Ваш срок:</label>
+                                <input type="date" id="date4">
+                                <span class="days-hint" id="hint4">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Шаг 5 -->
+                    <div class="step-group" data-step="5">
+                        <div class="step-header">
+                            <input type="checkbox" id="step5" checked>
+                            <label for="step5">Утверждение положения о внутреннем контроле</label>
+                            <span class="badge">
+                                31 дек
+                                <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            </span>
+                        </div>
+                        <div class="step-body" id="body5">
+                            <ul>
+                                <li>Утвердите положение о ВК в своей учётной политике</li>
+                                <li>Сформируйте график регулярных проверок и контрольных мероприятий</li>
+                                <li>Включите в положение о внутреннем контроле процедуры по выявлению и снижению этих рисков (сроки, формы, периодичность сверок, порядок фиксации расхождений)</li>
+                            </ul>
+                            <div class="result">✅ Результат: актуальное положение о внутреннем контроле, которое полностью соответствует новым требованиям</div>
+                            <div class="date-row">
+                                <label>📅 Ваш срок:</label>
+                                <input type="date" id="date5">
+                                <span class="days-hint" id="hint5">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="generateBtn">📄 Сформировать план</button>
+                <button class="btn btn-secondary" id="expandAllBtn">📂 Развернуть всё</button>
+                <button class="btn btn-secondary" id="collapseAllBtn">📁 Свернуть всё</button>
+            </div>
+
+            <div class="time-warning" id="timeWarning">
+                ⚠️ <strong>Внимание!</strong> Сроки выполнения задач превышают доступное рабочее время.
+                Рекомендуется скорректировать график или пересмотреть объём задач.
+            </div>
+        </div>
+
+        <!-- Вывод плана -->
+        <div class="card plan-output" id="planOutput">
+            <h2>
+                📋 Ваш план внедрения
+                <span class="plan-badge" id="planBadge">5 задач</span>
+            </h2>
+            <div id="planList"></div>
+            <div class="plan-footer" id="planFooter">
+                <span>📅 Период: <span id="planPeriod">—</span></span>
+                <span>⏳ Доступно дней: <span id="planFreeDays">—</span></span>
+                <span>📊 Всего задач: <span id="planTotalTasks">—</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Расчёт календарных дней от текущей даты до 31 декабря
+            function calculateTotalDays() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const endDate = new Date(today.getFullYear(), 11, 31);
+                endDate.setHours(0, 0, 0, 0);
+
+                if (today > endDate) return 0;
+
+                const diffTime = endDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                return diffDays;
+            }
+
+            const TOTAL_CALENDAR_DAYS = calculateTotalDays();
+
+            // Данные шагов с результатами в формате "сделать"
+            const stepData = [{
+                title: 'Экспресс-диагностика текущего контроля',
+                action: 'Определить перечень слабых мест и зон повышенного риска в учете',
+                defaultOffset: 0
+            }, {
+                title: 'Распределение ответственности и доступов',
+                action: 'Утвердить приказ о назначении ответственных и матрицу ответственности с четким распределением зон контроля',
+                defaultOffset: 30
+            }, {
+                title: 'Доработка регламентов под новые требования',
+                action: 'Актуализировать внутренние регламенты с прописанными шагами контроля, сроками и формами фиксации результатов',
+                defaultOffset: 61
+            }, {
+                title: 'Обучение сотрудников',
+                action: 'Провести обучение персонала и доработать систему контроля с учетом обратной связи и выявленных сложностей',
+                defaultOffset: 92
+            }, {
+                title: 'Утверждение положения о внутреннем контроле',
+                action: 'Внести изменения в учетную политику и утвердить положение о внутреннем контроле с процедурами по выявлению и снижению рисков',
+                defaultOffset: 123
+            }];
+
+            // Элементы калькулятора
+            const weekendsInput = document.getElementById('weekends');
+            const otherTasksInput = document.getElementById('otherTasks');
+            const vacationInput = document.getElementById('vacation');
+            const reportingInput = document.getElementById('reporting');
+            const inventoryInput = document.getElementById('inventory');
+            const yearCloseInput = document.getElementById('yearClose');
+            const accountingPolicyInput = document.getElementById('accountingPolicy');
+            const freeDaysInfo = document.getElementById('freeDaysInfo');
+            const totalDaysInfo = document.getElementById('totalDaysInfo');
+            const periodInfo = document.getElementById('periodInfo');
+            const selectedTasksInfo = document.getElementById('selectedTasksInfo');
+            const timeWarning = document.getElementById('timeWarning');
+
+            // Шаги
+            const stepCheckboxes = [
+                document.getElementById('step1'),
+                document.getElementById('step2'),
+                document.getElementById('step3'),
+                document.getElementById('step4'),
+                document.getElementById('step5')
+            ];
+
+            const stepBodies = [
+                document.getElementById('body1'),
+                document.getElementById('body2'),
+                document.getElementById('body3'),
+                document.getElementById('body4'),
+                document.getElementById('body5')
+            ];
+
+            const dateInputs = [
+                document.getElementById('date1'),
+                document.getElementById('date2'),
+                document.getElementById('date3'),
+                document.getElementById('date4'),
+                document.getElementById('date5')
+            ];
+
+            const hints = [
+                document.getElementById('hint1'),
+                document.getElementById('hint2'),
+                document.getElementById('hint3'),
+                document.getElementById('hint4'),
+                document.getElementById('hint5')
+            ];
+
+            const stepHeaders = document.querySelectorAll('.step-header');
+            const expandAllBtn = document.getElementById('expandAllBtn');
+            const collapseAllBtn = document.getElementById('collapseAllBtn');
+            const generateBtn = document.getElementById('generateBtn');
+            const planOutput = document.getElementById('planOutput');
+            const planList = document.getElementById('planList');
+            const planPeriod = document.getElementById('planPeriod');
+            const planFreeDays = document.getElementById('planFreeDays');
+            const planTotalTasks = document.getElementById('planTotalTasks');
+            const planBadge = document.getElementById('planBadge');
+
+            // Установка дефолтных дат
+            function setDefaultDates() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                dateInputs.forEach((input, i) => {
+                    if (!input.value) {
+                        const targetDate = new Date(today);
+                        targetDate.setDate(today.getDate() + stepData[i].defaultOffset);
+                        const year = targetDate.getFullYear();
+                        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+                        const day = String(targetDate.getDate()).padStart(2, '0');
+                        input.value = `${year}-${month}-${day}`;
+                    }
+                });
+            }
+
+            // Расчёт свободных дней
+            function calculateFreeDays() {
+                const weekends = parseInt(weekendsInput.value, 10) || 0;
+                const otherTasks = parseInt(otherTasksInput.value, 10) || 0;
+                const vacation = parseInt(vacationInput.value, 10) || 0;
+                const reporting = parseInt(reportingInput.value, 10) || 0;
+                const inventory = parseInt(inventoryInput.value, 10) || 0;
+                const yearClose = parseInt(yearCloseInput.value, 10) || 0;
+                const accountingPolicy = parseInt(accountingPolicyInput.value, 10) || 0;
+
+                const totalUsed = weekends + otherTasks + vacation + reporting + inventory + yearClose + accountingPolicy;
+                let free = TOTAL_CALENDAR_DAYS - totalUsed;
+                if (free < 0) free = 0;
+
+                return { free, totalUsed };
+            }
+
+            // Получение отформатированной даты
+            function getFormattedDate(date) {
+                return date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+            }
+
+            // Обновление информации
+            function updateInfo() {
+                const { free } = calculateFreeDays();
+                const selectedCount = stepCheckboxes.filter(cb => cb.checked).length;
+
+                const today = new Date();
+                const endDate = new Date(today.getFullYear(), 11, 31);
+
+                periodInfo.textContent = `${getFormattedDate(today)} — ${getFormattedDate(endDate)}`;
+                totalDaysInfo.textContent = TOTAL_CALENDAR_DAYS;
+                freeDaysInfo.textContent = free;
+                selectedTasksInfo.textContent = selectedCount;
+
+                dateInputs.forEach((input, i) => {
+                    if (input.value) {
+                        const daysUntil = calculateDaysUntil(input.value);
+                        const hintEl = hints[i];
+                        if (daysUntil !== null) {
+                            hintEl.textContent = `${daysUntil} дн.`;
+                            hintEl.className = 'days-hint';
+                            if (daysUntil < 10) {
+                                hintEl.classList.add('danger');
+                            } else if (daysUntil < 20) {
+                                hintEl.classList.add('warning');
+                            }
+                        } else {
+                            hintEl.textContent = '—';
+                            hintEl.className = 'days-hint';
+                        }
+                    }
+                });
+
+                if (selectedCount > 0 && selectedCount > free && free < 30) {
+                    timeWarning.classList.add('visible');
+                } else {
+                    timeWarning.classList.remove('visible');
+                }
+
+                return { free, selectedCount };
+            }
+
+            function calculateDaysUntil(dateStr) {
+                if (!dateStr) return null;
+                const target = new Date(dateStr + 'T00:00:00');
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+                const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+                return diff >= 0 ? diff : 0;
+            }
+
+            function formatDate(dateStr) {
+                if (!dateStr) return 'не указана';
+                const d = new Date(dateStr + 'T00:00:00');
+                return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+            }
+
+            // Генерация плана с действиями
+            function generatePlan() {
+                const { free } = calculateFreeDays();
+                const selected = [];
+
+                stepCheckboxes.forEach((cb, i) => {
+                    if (cb.checked) {
+                        const dateVal = dateInputs[i].value;
+                        selected.push({
+                            index: i + 1,
+                            action: stepData[i].action,
+                            date: dateVal,
+                            dateFormatted: formatDate(dateVal),
+                            daysUntil: calculateDaysUntil(dateVal)
+                        });
+                    }
+                });
+
+                if (selected.length === 0) {
+                    planList.innerHTML =
+                        `<div class="empty-plan">⚠️ Не выбрано ни одной задачи. Отметьте нужные шаги.</div>`;
+                    planOutput.classList.add('visible');
+                    planBadge.textContent = '0 задач';
+                    planPeriod.textContent = '—';
+                    planFreeDays.textContent = free;
+                    planTotalTasks.textContent = '0';
+                    return;
+                }
+
+                selected.sort((a, b) => a.date.localeCompare(b.date));
+
+                let html = '';
+                selected.forEach((item, idx) => {
+                    const daysLeft = item.daysUntil !== null ? item.daysUntil : '—';
+                    let daysClass = 'days-left';
+                    if (daysLeft !== '—' && daysLeft < 10) {
+                        daysClass += ' danger';
+                    } else if (daysLeft !== '—' && daysLeft < 20) {
+                        daysClass += ' warning';
+                    }
+                    html += `
+                        <div class="plan-item">
+                            <span class="num">${idx + 1}.</span>
+                            <span class="task">${item.action}</span>
+                            <span class="date">${item.dateFormatted}</span>
+                            <span class="${daysClass}">${daysLeft !== '—' ? daysLeft + ' дн.' : '—'}</span>
+                        </div>
+                    `;
+                });
+
+                // Период — от текущей даты до 31 декабря
+                const today = new Date();
+                const endDate = new Date(today.getFullYear(), 11, 31);
+                const periodStr = `${getFormattedDate(today)} — ${getFormattedDate(endDate)}`;
+
+                planList.innerHTML = html;
+                planPeriod.textContent = periodStr;
+                planFreeDays.textContent = free;
+                planTotalTasks.textContent = selected.length;
+                planBadge.textContent = `${selected.length} задач`;
+                planOutput.classList.add('visible');
+            }
+
+            // Обработчики
+            stepHeaders.forEach((header, index) => {
+                header.addEventListener('click', function(e) {
+                    if (e.target.type === 'checkbox') return;
+                    const body = stepBodies[index];
+                    body.classList.toggle('open');
+                });
+            });
+
+            expandAllBtn.addEventListener('click', () => stepBodies.forEach(b => b.classList.add('open')));
+            collapseAllBtn.addEventListener('click', () => stepBodies.forEach(b => b.classList.remove('open')));
+
+            dateInputs.forEach((input, i) => {
+                input.addEventListener('change', () => {
+                    updateInfo();
+                    generatePlan();
+                });
+            });
+
+            const calcInputs = [weekendsInput, otherTasksInput, vacationInput, reportingInput, inventoryInput, yearCloseInput,
+                accountingPolicyInput
+            ];
+            calcInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    updateInfo();
+                    generatePlan();
+                });
+            });
+
+            stepCheckboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    updateInfo();
+                    generatePlan();
+                });
+            });
+
+            generateBtn.addEventListener('click', () => {
+                updateInfo();
+                generatePlan();
+            });
+
+            // Инициализация
+            window.addEventListener('DOMContentLoaded', function() {
+                setDefaultDates();
+                updateInfo();
+                generatePlan();
+            });
+
+            setTimeout(() => {
+                setDefaultDates();
+                updateInfo();
+                generatePlan();
+            }, 50);
+        })();
+    </script>
+
+</body>
+</html>
