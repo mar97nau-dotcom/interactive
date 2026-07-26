@@ -120,6 +120,13 @@
             opacity: 0.5;
         }
 
+        .item input[type="number"]:disabled {
+            background: #f0ece4;
+            color: #3d3a34;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
         .result-area {
             background: #fcf9f4;
             border-radius: 28px;
@@ -182,40 +189,6 @@
             color: #29522a;
         }
 
-        .footnote {
-            margin-top: 18px;
-            font-size: 0.9rem;
-            color: #5a554c;
-            background: #f3efe9;
-            padding: 14px 18px;
-            border-radius: 60px;
-            display: inline-block;
-            border: 1px solid #e2dad0;
-        }
-
-        .footnote strong {
-            color: #2f2a22;
-            font-weight: 600;
-        }
-
-        .reset-btn {
-            background: transparent;
-            border: 1px solid #d0c7b8;
-            border-radius: 40px;
-            padding: 6px 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #4d4841;
-            cursor: pointer;
-            transition: 0.1s;
-            margin-left: 12px;
-        }
-
-        .reset-btn:hover {
-            background: #ede8df;
-            border-color: #b7ab98;
-        }
-
         .info-row {
             display: flex;
             flex-wrap: wrap;
@@ -247,29 +220,29 @@
         <button class="reset-btn" id="resetDefaults">↺ Сбросить</button>
     </h1>
     <div class="subhead">
-        <span id="periodDescription">С августа по декабрь — <strong>153 календарных дня</strong> (из них <strong id="weekendCountDisplay">46</strong> выходных).</span>
+        <span id="periodDescription">С сегодняшнего дня до 31 декабря 2026 — <strong id="totalDaysDisplay">0</strong> календарных дней (из них <strong id="workDaysDisplay">0</strong> рабочих, <strong id="weekendsDisplay">0</strong> выходных).</span>
         <span style="display:block; margin-top:4px; font-size:0.9rem;">Вычтите обязательные мероприятия, чтобы узнать, сколько дней у вас осталось для внедрения.</span>
     </div>
 
     <div class="grid" id="inputGrid">
         <div class="item" style="background:#f4f1eb; border-color: #d4cbbc;">
-            <label><span>🌙</span> Выходные дни</label>
-            <input type="number" id="weekends" min="0" max="100" value="46">
+            <label><span>🌙</span> Выходные и праздничные дни</label>
+            <input type="number" id="weekends" min="0" max="200" value="0">
         </div>
 
-        <div class="item">
+        <div class="item" style="background:#e8f0f8; border-color: #b8cce0;">
             <label><span>⚡</span> Текучка (каждый рабочий день минимум по 4 часа)</label>
-            <input type="number" id="otherTasks" min="0" max="107" value="54">
+            <input type="number" id="otherTasks" min="0" max="200" value="0" disabled style="background:#f0f4f8;">
         </div>
 
         <div class="item">
             <label><span>🏖️</span> Ваш отпуск</label>
-            <input type="number" id="vacation" min="0" max="31" value="0">
+            <input type="number" id="vacation" min="0" max="60" value="0">
         </div>
 
         <div class="item">
             <label><span>📊</span> Сдача отчетности за 9 месяцев</label>
-            <input type="number" id="reporting" min="0" max="30" value="8">
+            <input type="number" id="reporting" min="0" max="60" value="8">
         </div>
 
         <div class="item">
@@ -279,12 +252,12 @@
 
         <div class="item">
             <label><span>📆</span> Закрытие года</label>
-            <input type="number" id="yearClose" min="0" max="40" value="10">
+            <input type="number" id="yearClose" min="0" max="60" value="10">
         </div>
 
         <div class="item">
             <label><span>⚖️</span> Корректировка учетной политики на 2027 год</label>
-            <input type="number" id="accountingPolicy" min="0" max="20" value="3">
+            <input type="number" id="accountingPolicy" min="0" max="30" value="3">
         </div>
 
         <div class="item" style="background:#f6f2ea; border-color: #d6cbbe;">
@@ -297,28 +270,135 @@
         <div class="result-row">
             <div>
                 <div style="font-weight:400; color:#554f47; letter-spacing:0.2px; margin-bottom:4px;">Осталось дней для внедрения</div>
-                <div class="days-big" id="remainingDays">107 <small>дней</small></div>
+                <div class="days-big" id="remainingDays">0 <small>дней</small></div>
             </div>
             <div class="status-tag" id="statusTag">✅ Достаточно времени</div>
         </div>
         <div class="info-row">
-            <span style="background:#eae4db; padding:2px 16px; border-radius:40px; font-size:0.85rem; color:#3b3630;" id="baseDaysLabel">153 календарных дня</span>
+            <span style="background:#eae4db; padding:2px 16px; border-radius:40px; font-size:0.85rem; color:#3b3630;" id="baseDaysLabel">0 календарных дней</span>
             <span id="usedDetail" style="font-size:0.9rem; color:#4a453e;">занято: 0 дней</span>
-            <span id="weekendsDetail" style="font-size:0.9rem; color:#4a453e;">выходных: 46</span>
+            <span id="workDaysDetail" style="font-size:0.9rem; color:#4a453e;">рабочих: 0</span>
+            <span id="weekendsDetail" style="font-size:0.9rem; color:#4a453e;">выходных: 0</span>
         </div>
-    </div>
-
-    <div class="footnote">
-        💡 <strong>Максимум 33 дня</strong> на подготовку к новой системе, если учесть все рекомендуемые значения. 
-        Корректируйте цифры под свой график.
     </div>
 </div>
 
 <script>
     (function() {
-        const TOTAL_CALENDAR_DAYS = 153;
+        // ============================================
+        // Список официальных праздничных дней в России на 2026 год
+        // ============================================
+        function getHolidays() {
+            const holidays = [
+                '2026-01-01', '2026-01-02', '2026-01-03', '2026-01-04', '2026-01-05', '2026-01-06', '2026-01-07', '2026-01-08',
+                '2026-02-23',
+                '2026-03-09',
+                '2026-05-01',
+                '2026-05-04',
+                '2026-05-11',
+                '2026-06-12',
+                '2026-06-14',
+                '2026-11-04',
+                '2026-12-31'
+            ];
+            
+            const holidaySet = new Set();
+            holidays.forEach(dateStr => {
+                const date = new Date(dateStr);
+                date.setHours(0, 0, 0, 0);
+                holidaySet.add(date.getTime());
+            });
+            
+            return holidaySet;
+        }
 
-        // Элементы ввода
+        // ============================================
+        // 1. Функция для расчета календарных дней (включая сегодня)
+        // ============================================
+        function getDaysUntilEndOfYear() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const endDate = new Date(2026, 11, 31);
+            endDate.setHours(0, 0, 0, 0);
+            
+            if (today > endDate) return 0;
+            
+            const diffTime = endDate.getTime() - today.getTime();
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            return diffDays;
+        }
+
+        // ============================================
+        // 2. Функция для расчета рабочих дней с учетом праздников
+        // ============================================
+        function getWorkDaysUntilEndOfYear() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const endDate = new Date(2026, 11, 31);
+            endDate.setHours(0, 0, 0, 0);
+            
+            if (today > endDate) return 0;
+            
+            const holidays = getHolidays();
+            let workDays = 0;
+            let current = new Date(today);
+            
+            while (current <= endDate) {
+                const dayOfWeek = current.getDay();
+                const time = current.getTime();
+                
+                if (dayOfWeek !== 0 && dayOfWeek !== 6 && !holidays.has(time)) {
+                    workDays++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            
+            return workDays;
+        }
+
+        // ============================================
+        // 3. Функция для расчета выходных и праздничных дней
+        // ============================================
+        function getWeekendsUntilEndOfYear() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const endDate = new Date(2026, 11, 31);
+            endDate.setHours(0, 0, 0, 0);
+            
+            if (today > endDate) return 0;
+            
+            const holidays = getHolidays();
+            let weekends = 0;
+            let current = new Date(today);
+            
+            while (current <= endDate) {
+                const dayOfWeek = current.getDay();
+                const time = current.getTime();
+                
+                if (dayOfWeek === 0 || dayOfWeek === 6 || holidays.has(time)) {
+                    weekends++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            
+            return weekends;
+        }
+
+        // ============================================
+        // Функция для расчета "Текучки" (рабочие дни / 2)
+        // ============================================
+        function calculateOtherTasks() {
+            const workDays = getWorkDaysUntilEndOfYear();
+            return Math.ceil(workDays / 2);
+        }
+
+        // ============================================
+        // Элементы DOM
+        // ============================================
         const weekendsInput = document.getElementById('weekends');
         const otherTasksInput = document.getElementById('otherTasks');
         const vacationInput = document.getElementById('vacation');
@@ -327,18 +407,20 @@
         const yearCloseInput = document.getElementById('yearClose');
         const accountingPolicyInput = document.getElementById('accountingPolicy');
 
-        // Элементы отображения
         const remainingDisplay = document.getElementById('remainingDays');
         const statusTag = document.getElementById('statusTag');
         const totalUsedDisplay = document.getElementById('totalUsedDisplay');
         const usedDetail = document.getElementById('usedDetail');
-        const weekendCountDisplay = document.getElementById('weekendCountDisplay');
+        const workDaysDisplay = document.getElementById('workDaysDisplay');
+        const workDaysDetail = document.getElementById('workDaysDetail');
+        const weekendsDisplay = document.getElementById('weekendsDisplay');
         const weekendsDetail = document.getElementById('weekendsDetail');
         const baseDaysLabel = document.getElementById('baseDaysLabel');
+        const totalDaysDisplay = document.getElementById('totalDaysDisplay');
+        const periodDescription = document.getElementById('periodDescription');
 
         const inputs = [
             weekendsInput,
-            otherTasksInput,
             vacationInput,
             reportingInput,
             inventoryInput,
@@ -346,7 +428,17 @@
             accountingPolicyInput
         ];
 
+        // ============================================
+        // Основная функция пересчета
+        // ============================================
         function recalc() {
+            const TOTAL_CALENDAR_DAYS = getDaysUntilEndOfYear();
+            const ACTUAL_WORK_DAYS = getWorkDaysUntilEndOfYear();
+            const ACTUAL_WEEKENDS = getWeekendsUntilEndOfYear();
+
+            const otherTasksAuto = calculateOtherTasks();
+            otherTasksInput.value = otherTasksAuto;
+
             const weekends = parseInt(weekendsInput.value, 10) || 0;
             const otherTasks = parseInt(otherTasksInput.value, 10) || 0;
             const vacation = parseInt(vacationInput.value, 10) || 0;
@@ -363,9 +455,15 @@
             remainingDisplay.innerHTML = `${remaining} <small>дней</small>`;
             totalUsedDisplay.textContent = totalUsed;
             usedDetail.textContent = `занято: ${totalUsed} дней`;
-            weekendCountDisplay.textContent = weekends;
-            weekendsDetail.textContent = `выходных: ${weekends}`;
+            
+            workDaysDisplay.textContent = ACTUAL_WORK_DAYS;
+            workDaysDetail.textContent = `рабочих: ${ACTUAL_WORK_DAYS}`;
+            weekendsDisplay.textContent = ACTUAL_WEEKENDS;
+            weekendsDetail.textContent = `выходных: ${ACTUAL_WEEKENDS}`;
+            
+            totalDaysDisplay.textContent = TOTAL_CALENDAR_DAYS;
             baseDaysLabel.textContent = `${TOTAL_CALENDAR_DAYS} календарных дней`;
+            periodDescription.innerHTML = `С сегодняшнего дня до 31 декабря 2026 — <strong>${TOTAL_CALENDAR_DAYS}</strong> календарных дней (из них <strong>${ACTUAL_WORK_DAYS}</strong> рабочих, <strong>${ACTUAL_WEEKENDS}</strong> выходных).`;
 
             let statusText = '';
             let statusClass = '';
@@ -394,11 +492,27 @@
 
             statusTag.textContent = statusText;
             statusTag.className = 'status-tag ' + statusClass;
+
+            console.log('📊 Отладочная информация:');
+            console.log(`📅 Сегодня: ${new Date().toLocaleDateString('ru-RU')}`);
+            console.log(`📆 Всего календарных дней: ${TOTAL_CALENDAR_DAYS}`);
+            console.log(`💼 Рабочих дней: ${ACTUAL_WORK_DAYS}`);
+            console.log(`🌙 Выходных и праздничных: ${ACTUAL_WEEKENDS}`);
+            console.log(`⚡ Текучка (рабочие дни / 2): ${otherTasksAuto}`);
+            console.log(`📋 Занято дней: ${totalUsed}`);
+            console.log(`⏳ Осталось дней: ${remaining}`);
+            console.log('---');
         }
 
+        // ============================================
+        // Сброс к значениям по умолчанию
+        // ============================================
         function resetToDefaults() {
-            weekendsInput.value = 46;
-            otherTasksInput.value = 54;
+            const actualWeekends = getWeekendsUntilEndOfYear();
+            const actualOtherTasks = calculateOtherTasks();
+            
+            weekendsInput.value = actualWeekends;
+            otherTasksInput.value = actualOtherTasks;
             vacationInput.value = 0;
             reportingInput.value = 8;
             inventoryInput.value = 10;
@@ -407,6 +521,9 @@
             recalc();
         }
 
+        // ============================================
+        // Обработчики событий
+        // ============================================
         inputs.forEach(input => {
             input.addEventListener('input', recalc);
             input.addEventListener('change', recalc);
@@ -414,18 +531,31 @@
 
         document.getElementById('resetDefaults').addEventListener('click', resetToDefaults);
 
+        // ============================================
+        // Инициализация при загрузке страницы
+        // ============================================
         window.addEventListener('DOMContentLoaded', function() {
-            if (weekendsInput.value === '') weekendsInput.value = 46;
-            if (otherTasksInput.value === '') otherTasksInput.value = 54;
-            if (vacationInput.value === '') vacationInput.value = 0;
-            if (reportingInput.value === '') reportingInput.value = 8;
-            if (inventoryInput.value === '') inventoryInput.value = 10;
-            if (yearCloseInput.value === '') yearCloseInput.value = 10;
-            if (accountingPolicyInput.value === '') accountingPolicyInput.value = 3;
+            const actualWeekends = getWeekendsUntilEndOfYear();
+            const actualOtherTasks = calculateOtherTasks();
+            
+            weekendsInput.value = actualWeekends;
+            otherTasksInput.value = actualOtherTasks;
+            vacationInput.value = 0;
+            reportingInput.value = 8;
+            inventoryInput.value = 10;
+            yearCloseInput.value = 10;
+            accountingPolicyInput.value = 3;
+            
             recalc();
         });
 
-        setTimeout(recalc, 20);
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                recalc();
+            }
+        });
+
+        setTimeout(recalc, 100);
     })();
 </script>
 
