@@ -40,13 +40,14 @@
         }
 
         h1 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 600;
             letter-spacing: -0.2px;
             color: #1e1e1e;
             display: flex;
             align-items: center;
             gap: 8px;
+            line-height: 1.3;
         }
 
         .reset-btn {
@@ -87,6 +88,11 @@
             margin-top: 2px;
             font-size: 0.8rem;
             color: #6a655e;
+        }
+
+        .subhead .note strong {
+            color: #c9a84c;
+            font-weight: 600;
         }
 
         .grid {
@@ -214,49 +220,24 @@
         }
 
         .status-tag {
-            font-size: 0.95rem;
-            font-weight: 500;
-            padding: 6px 20px;
-            border-radius: 60px;
-            background: #f0ece4;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 0;
+            background: transparent !important;
             color: #3d3a34;
-            border: 1px solid #d9d0c1;
             white-space: nowrap;
         }
 
         .status-tag.warning {
-            background: #f8e9d0;
-            border-color: #dbbd8f;
             color: #7a5d2e;
         }
 
         .status-tag.danger {
-            background: #f7e0da;
-            border-color: #dbb5a8;
             color: #873d2c;
         }
 
         .status-tag.success {
-            background: #e2eee1;
-            border-color: #b6ceb0;
             color: #29522a;
-        }
-
-        .info-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 18px;
-            margin-top: 6px;
-            font-size: 0.78rem;
-            color: #4a453e;
-        }
-
-        .info-badge {
-            background: #eae4db;
-            padding: 1px 14px;
-            border-radius: 30px;
-            font-size: 0.78rem;
-            color: #3b3630;
         }
 
         @media (max-width: 650px) {
@@ -264,9 +245,13 @@
             .grid { grid-template-columns: 1fr; gap: 8px; }
             .result-row { flex-direction: column; align-items: stretch; }
             .days-big { font-size: 2rem; }
-            .status-tag { white-space: normal; align-self: flex-start; font-size: 0.85rem; padding: 4px 16px; }
+            .status-tag { 
+                white-space: normal; 
+                align-self: flex-start; 
+                font-size: 1.1rem;
+            }
             .result-left { flex-wrap: wrap; }
-            h1 { font-size: 1.2rem; }
+            h1 { font-size: 1.1rem; }
             .item { padding: 5px 6px 5px 10px; }
             .item label { font-size: 0.8rem; }
             .item input[type="number"] { width: 56px; font-size: 0.8rem; }
@@ -279,6 +264,8 @@
             .reset-btn { text-align: center; }
             .item { flex-wrap: wrap; gap: 4px; border-radius: 20px; padding: 6px 10px; }
             .item input[type="number"] { width: 100%; }
+            .status-tag { font-size: 1rem; }
+            h1 { font-size: 1rem; }
         }
     </style>
 </head>
@@ -291,7 +278,7 @@
 
     <div class="subhead">
         <span id="periodDescription">С <strong id="todayDate">сегодняшнего дня</strong> до 31 декабря 2026 — <strong id="totalDaysDisplay">0</strong> календарных дней (из них <strong id="workDaysDisplay">0</strong> рабочих, <strong id="weekendsDisplay">0</strong> выходных).</span>
-        <span class="note">На текущую работу рекомендуем заложить как минимум 4 часа в день, что в сумме составит 56 дней до конца года.</span>
+        <span class="note" id="currentWorkNote">На текущую работу рекомендуем заложить как минимум 4 часа в день, что в сумме составит <strong id="currentWorkDaysDisplay">0</strong> дней до конца года.</span>
     </div>
 
     <div class="grid">
@@ -333,12 +320,6 @@
                 <span class="days-big" id="remainingDays">0 <small>дней</small></span>
             </div>
             <span class="status-tag" id="statusTag">✅ Достаточно времени</span>
-        </div>
-        <div class="info-row">
-            <span class="info-badge" id="baseDaysLabel">0 календарных дней</span>
-            <span id="usedDetail">занято: 0 дней</span>
-            <span id="workDaysDetail">рабочих: 0</span>
-            <span id="weekendsDetail">выходных: 0</span>
         </div>
     </div>
 </div>
@@ -400,6 +381,22 @@
             return Math.ceil(getWorkDays() / 2);
         }
 
+        function pluralizeDays(n) {
+            const lastDigit = n % 10;
+            const lastTwoDigits = n % 100;
+            
+            if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+                return 'дней';
+            }
+            if (lastDigit === 1) {
+                return 'день';
+            }
+            if (lastDigit >= 2 && lastDigit <= 4) {
+                return 'дня';
+            }
+            return 'дней';
+        }
+
         const el = id => document.getElementById(id);
         const currentWork = el('currentWork');
         const vacation = el('vacation');
@@ -410,15 +407,12 @@
 
         const remainingDisplay = el('remainingDays');
         const statusTag = el('statusTag');
-        const usedDetail = el('usedDetail');
         const workDaysDisplay = el('workDaysDisplay');
-        const workDaysDetail = el('workDaysDetail');
         const weekendsDisplay = el('weekendsDisplay');
-        const weekendsDetail = el('weekendsDetail');
-        const baseDaysLabel = el('baseDaysLabel');
         const totalDaysDisplay = el('totalDaysDisplay');
         const periodDescription = el('periodDescription');
         const todayDate = el('todayDate');
+        const currentWorkDaysDisplay = el('currentWorkDaysDisplay');
 
         const inputs = [currentWork, vacation, inventory, reporting, yearClose, accountingPolicy];
 
@@ -432,7 +426,6 @@
 
             todayDate.textContent = formatDate(today);
 
-            // Заполняем автоматически только при первом запуске или если поле пустое
             if (!isInitialized || currentWork.value === '' || currentWork.value === '0') {
                 currentWork.value = calcCurrentWork();
                 isInitialized = true;
@@ -449,23 +442,39 @@
             let remaining = workDays - totalUsed;
             if (remaining < 0) remaining = 0;
 
-            remainingDisplay.innerHTML = `${remaining} <small>дней</small>`;
-            usedDetail.textContent = `занято: ${totalUsed} дней`;
+            // Обновляем количество дней в подзаголовке
+            const currentWorkValue = parseInt(currentWork.value) || 0;
+            currentWorkDaysDisplay.textContent = currentWorkValue;
+
+            const daysWordRemaining = pluralizeDays(remaining);
+            remainingDisplay.innerHTML = `${remaining} <small>${daysWordRemaining}</small>`;
             workDaysDisplay.textContent = workDays;
-            workDaysDetail.textContent = `рабочих: ${workDays}`;
             weekendsDisplay.textContent = weekends;
-            weekendsDetail.textContent = `выходных: ${weekends}`;
             totalDaysDisplay.textContent = totalDays;
-            baseDaysLabel.textContent = `${totalDays} календарных дней`;
 
             periodDescription.innerHTML = `С <strong>${formatDate(today)}</strong> до 31 декабря 2026 — <strong>${totalDays}</strong> календарных дней (из них <strong>${workDays}</strong> рабочих, <strong>${weekends}</strong> выходных).`;
 
             let text, cls;
-            if (remaining >= 50) { text = '🌟 Много времени'; cls = 'success'; }
-            else if (remaining >= 30) { text = '✅ Хороший запас'; cls = 'success'; }
-            else if (remaining >= 15) { text = '⚠️ Времени в обрез'; cls = 'warning'; }
-            else if (remaining >= 1) { text = '⏳ Очень мало времени'; cls = 'danger'; }
-            else { text = '🚫 Дней нет'; cls = 'danger'; }
+            if (remaining >= 50) { 
+                text = '✅ Хороший запас'; 
+                cls = 'success'; 
+            }
+            else if (remaining >= 20 && remaining < 50) { 
+                text = '⚠️ Времени в обрез'; 
+                cls = 'warning'; 
+            }
+            else if (remaining >= 1 && remaining < 20) { 
+                text = '⏳ Очень мало времени'; 
+                cls = 'danger'; 
+            }
+            else if (remaining === 0) { 
+                text = '🚫 Дней нет'; 
+                cls = 'danger'; 
+            }
+            else { 
+                text = '✅ Хороший запас'; 
+                cls = 'success'; 
+            }
 
             statusTag.textContent = text;
             statusTag.className = 'status-tag ' + cls;
