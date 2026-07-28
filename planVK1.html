@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Пошаговый план подготовки к внутреннему контролю</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         * {
             margin: 0;
@@ -47,10 +46,6 @@
             margin-bottom: 0.2rem;
         }
 
-        h1 span {
-            font-size: 1.5rem;
-        }
-
         .subhead {
             color: #5e5a55;
             font-size: 0.85rem;
@@ -83,8 +78,6 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 6px;
-            cursor: pointer;
-            user-select: none;
         }
 
         .step-header input[type="checkbox"] {
@@ -155,7 +148,7 @@
             color: #3d3a34;
             font-size: 0.8rem;
             line-height: 1.4;
-            display: block;
+            display: block !important;
         }
 
         .step-body ul {
@@ -174,17 +167,6 @@
             left: 0;
             color: #c9a84c;
             font-weight: bold;
-        }
-
-        .step-body .result {
-            margin-top: 6px;
-            padding: 6px 12px;
-            background: #f8f5ef;
-            border-radius: 8px;
-            border-left: 3px solid #c9a84c;
-            font-weight: 500;
-            color: #2f2a22;
-            font-size: 0.78rem;
         }
 
         .date-row {
@@ -349,24 +331,6 @@
             border-radius: 30px;
         }
 
-        .plan-item .days-left {
-            font-size: 0.7rem;
-            color: #7a756d;
-            background: #e8e3da;
-            padding: 2px 8px;
-            border-radius: 30px;
-        }
-
-        .plan-item .days-left.warning {
-            background: #f8e9d0;
-            color: #7a5d2e;
-        }
-
-        .plan-item .days-left.danger {
-            background: #f7e0da;
-            color: #873d2c;
-        }
-
         .plan-footer {
             margin-top: 14px;
             padding-top: 12px;
@@ -468,13 +432,55 @@
                 padding: 1rem 1.2rem;
             }
         }
+
+        /* Стили для печати */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .card {
+                box-shadow: none;
+                padding: 20px;
+                border-radius: 0;
+            }
+            .btn, .back-btn-container, .actions, .step-header .badge, .date-row .days-hint, .time-info-bar {
+                display: none !important;
+            }
+            .step-body {
+                display: block !important;
+            }
+            .plan-output {
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+            .plan-item {
+                page-break-inside: avoid;
+            }
+            .hidden {
+                display: none !important;
+            }
+            #planBlock {
+                display: block !important;
+            }
+            #stepsBlock {
+                display: none !important;
+            }
+            h1, .subhead {
+                display: none !important;
+            }
+            .time-info-bar {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <h1>
-                <span>📋</span> Пошаговый план подготовки к внутреннему контролю
+                Пошаговый план подготовки к внутреннему контролю
             </h1>
             <div class="subhead">
                 <strong>Персональные сроки</strong> для каждого шага в плане
@@ -482,9 +488,9 @@
 
             <!-- Информация о времени -->
             <div class="time-info-bar">
-                <span><span class="label">📅 Период:</span> <span class="value" id="periodInfo">—</span></span>
-                <span><span class="label">📆 Всего дней:</span> <span class="value gold" id="totalDaysInfo">—</span></span>
-                <span><span class="label">✅ Выбрано задач:</span> <span class="value" id="selectedTasksInfo">0</span></span>
+                <span><span class="label">Период:</span> <span class="value" id="periodInfo">—</span></span>
+                <span><span class="label">Всего дней:</span> <span class="value gold" id="totalDaysInfo">—</span></span>
+                <span><span class="label">Выбрано задач:</span> <span class="value" id="selectedTasksInfo">0</span></span>
             </div>
 
             <!-- Блок с шагами (скрывается после формирования плана) -->
@@ -494,20 +500,19 @@
                     <div class="step-header">
                         <input type="checkbox" id="step1">
                         <span class="step-number">1.</span>
-                        <label for="step1">Экспресс-диагностика текущего контроля</label>
+                        <label for="step1">Экспресс-диагностика текущего контроля, чтобы определить зоны финансовых рисков в учреждении</label>
                         <span class="badge">
                             31 авг
-                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            <span class="tooltip">Рекомендуемый срок</span>
                         </span>
                     </div>
                     <div class="step-body" id="body1">
                         <ul>
-                            <li>Оцените контрольные процедуры на ключевых участках (учет матзапасов, работа с первичкой, сверка расчётов)</li>
-                            <li>Проведите опрос подразделений и выборочную проверку документов за последние 3–6 месяцев, чтобы выявить типовые ошибки (например, задержки авансовых отчётов, формальные инвентаризации)</li>
+                            <li>Оцените контрольные процедуры на ключевых участках</li>
+                            <li>Проведите опрос подразделений и выборочную проверку документов за последние 3–6 месяцев, чтобы выявить типовые ошибки (например, задержки авансовых отчетов, формальные инвентаризации)</li>
                         </ul>
-                        <div class="result">✅ Результат: перечень слабых мест и зон повышенного риска. Это ваша база для дальнейшей работы</div>
                         <div class="date-row">
-                            <label>📅 Ваш срок:</label>
+                            <label>Ваш срок:</label>
                             <input type="date" id="date1">
                             <span class="days-hint" id="hint1">—</span>
                         </div>
@@ -519,22 +524,21 @@
                     <div class="step-header">
                         <input type="checkbox" id="step2">
                         <span class="step-number">2.</span>
-                        <label for="step2">Распределение ответственности и доступов</label>
+                        <label for="step2">Назначение ответственных за контроль и распределение их ответственности</label>
                         <span class="badge">
                             30 сен
-                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            <span class="tooltip">Рекомендуемый срок</span>
                         </span>
                     </div>
                     <div class="step-body" id="body2">
                         <ul>
                             <li>Назначьте ответственных за контрольные процедуры</li>
-                            <li>Утвердите матрицу ролей (кто что проверяет и согласовывает)</li>
+                            <li>Утвердите матрицу ролей</li>
                             <li>Пропишите разграничение прав доступа к учетным системам</li>
-                            <li>Закрепите ответственных, кто будет проводить контроль по каждому риску (кто проверяет первичку, кто контролирует лимиты, кто ведёт претензионную работу)</li>
+                            <li>Закрепите ответственных по каждому риску</li>
                         </ul>
-                        <div class="result">✅ Результат: приказ о назначении ответственных и матрица ответственности, в которой будет четко зафиксировано, кто за что отвечает</div>
                         <div class="date-row">
-                            <label>📅 Ваш срок:</label>
+                            <label>Ваш срок:</label>
                             <input type="date" id="date2">
                             <span class="days-hint" id="hint2">—</span>
                         </div>
@@ -546,20 +550,19 @@
                     <div class="step-header">
                         <input type="checkbox" id="step3">
                         <span class="step-number">3.</span>
-                        <label for="step3">Доработка регламентов под новые требования</label>
+                        <label for="step3">Доработка регламентов под новые требования контроля с фиксацией результатов</label>
                         <span class="badge">
                             31 окт
-                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            <span class="tooltip">Рекомендуемый срок</span>
                         </span>
                     </div>
                     <div class="step-body" id="body3">
                         <ul>
                             <li>Приведите внутренние регламенты и контрольные процедуры в соответствие с новыми стандартами и учетом электронного документооборота</li>
-                            <li>Отработайте на одном участке (например, учёт матзапасов) контрольные процедуры по выявленным рискам, зафиксируйте отклонения и доработайте регламенты</li>
+                            <li>Отработайте контрольные процедуры на одном участке</li>
                         </ul>
-                        <div class="result">✅ Результат: Обновлённые регламенты с прописанными шагами контроля, сроками и формами фиксации результатов</div>
                         <div class="date-row">
-                            <label>📅 Ваш срок:</label>
+                            <label>Ваш срок:</label>
                             <input type="date" id="date3">
                             <span class="days-hint" id="hint3">—</span>
                         </div>
@@ -571,10 +574,10 @@
                     <div class="step-header">
                         <input type="checkbox" id="step4">
                         <span class="step-number">4.</span>
-                        <label for="step4">Обучение сотрудников</label>
+                        <label for="step4">Обучение сотрудников и тестирование контроля на участках</label>
                         <span class="badge">
                             30 ноя
-                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            <span class="tooltip">Рекомендуемый срок</span>
                         </span>
                     </div>
                     <div class="step-body" id="body4">
@@ -583,9 +586,8 @@
                             <li>Запустите пилотную проверку на одном участке контроля</li>
                             <li>Соберите обратную связь, зафиксируйте сложности и точки доработки</li>
                         </ul>
-                        <div class="result">✅ Результат: выводы и списки корректировок – система доработана с учетом реальных рабочих ситуаций</div>
                         <div class="date-row">
-                            <label>📅 Ваш срок:</label>
+                            <label>Ваш срок:</label>
                             <input type="date" id="date4">
                             <span class="days-hint" id="hint4">—</span>
                         </div>
@@ -597,21 +599,20 @@
                     <div class="step-header">
                         <input type="checkbox" id="step5">
                         <span class="step-number">5.</span>
-                        <label for="step5">Утверждение положения о внутреннем контроле</label>
+                        <label for="step5">Утверждение положения о внутреннем контроле на 2027 год с новыми требованиями</label>
                         <span class="badge">
                             31 дек
-                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                            <span class="tooltip">Рекомендуемый срок</span>
                         </span>
                     </div>
                     <div class="step-body" id="body5">
                         <ul>
-                            <li>Утвердите положение о ВК в своей учётной политике</li>
+                            <li>Утвердите положение о ВК в своей учетной политике</li>
                             <li>Сформируйте график регулярных проверок и контрольных мероприятий</li>
                             <li>Включите в положение о внутреннем контроле процедуры по выявлению и снижению этих рисков (сроки, формы, периодичность сверок, порядок фиксации расхождений)</li>
                         </ul>
-                        <div class="result">✅ Результат: актуальное положение о внутреннем контроле, которое полностью соответствует новым требованиям</div>
                         <div class="date-row">
-                            <label>📅 Ваш срок:</label>
+                            <label>Ваш срок:</label>
                             <input type="date" id="date5">
                             <span class="days-hint" id="hint5">—</span>
                         </div>
@@ -619,7 +620,7 @@
                 </div>
 
                 <div class="actions">
-                    <button class="btn btn-primary" id="generateBtn">📄 Сформировать план</button>
+                    <button class="btn btn-primary" id="generateBtn">Сформировать план</button>
                 </div>
             </div>
 
@@ -627,18 +628,18 @@
             <div id="planBlock" class="hidden">
                 <div class="plan-output" id="planContent">
                     <h2>
-                        📋 Ваш план внедрения
+                        Ваш план внедрения системы внутреннего контроля
                         <span class="plan-badge" id="planBadge">5 задач</span>
                     </h2>
                     <div id="planList"></div>
                     <div class="plan-footer" id="planFooter">
-                        <span>📅 Период: <span id="planPeriod">—</span></span>
-                        <span>📊 Всего задач: <span id="planTotalTasks">—</span></span>
+                        <span>Период: <span id="planPeriod">—</span></span>
+                        <span>Всего задач: <span id="planTotalTasks">—</span></span>
                     </div>
                 </div>
                 <div class="back-btn-container">
                     <button class="btn btn-secondary" id="backBtn">← Вернуться к редактированию</button>
-                    <button class="btn btn-success" id="downloadBtn">⬇ Скачать план (PDF)</button>
+                    <button class="btn btn-success" id="downloadBtn">Скачать план (PDF)</button>
                 </div>
             </div>
         </div>
@@ -646,7 +647,7 @@
 
     <script>
         (function() {
-            // Расчёт календарных дней от текущей даты до 31 декабря
+            // Расчет календарных дней от текущей даты до 31 декабря
             function calculateTotalDays() {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
@@ -678,25 +679,45 @@
 
             // Данные шагов
             const stepData = [{
-                title: 'Экспресс-диагностика текущего контроля',
-                action: 'Определить перечень слабых мест и зон повышенного риска в учете',
-                defaultDate: null // будет вычислено динамически
+                title: 'Экспресс-диагностика текущего контроля, чтобы определить зоны финансовых рисков в учреждении',
+                tasks: [
+                    'Оценить контрольные процедуры на ключевых участках',
+                    'Провести опрос подразделений и выборочную проверку документов за последние 3-6 месяцев'
+                ],
+                defaultDate: null
             }, {
-                title: 'Распределение ответственности и доступов',
-                action: 'Утвердить приказ о назначении ответственных и матрицу ответственности с четким распределением зон контроля',
-                defaultDate: new Date(2026, 8, 30) // 30 сентября 2026
+                title: 'Назначение ответственных за контроль и распределение их ответственности',
+                tasks: [
+                    'Назначить ответственных за контрольные процедуры',
+                    'Утвердить матрицу ролей',
+                    'Прописать разграничение прав доступа к учетным системам',
+                    'Закрепить ответственных по каждому риску'
+                ],
+                defaultDate: new Date(2026, 8, 30)
             }, {
-                title: 'Доработка регламентов под новые требования',
-                action: 'Актуализировать внутренние регламенты с прописанными шагами контроля, сроками и формами фиксации результатов',
-                defaultDate: new Date(2026, 9, 31) // 31 октября 2026
+                title: 'Доработка регламентов под новые требования контроля с фиксацией результатов',
+                tasks: [
+                    'Привести внутренние регламенты в соответствие с новыми стандартами',
+                    'Отработать контрольные процедуры на одном участке',
+                    'Зафиксировать отклонения и доработать регламенты'
+                ],
+                defaultDate: new Date(2026, 9, 31)
             }, {
-                title: 'Обучение сотрудников',
-                action: 'Провести обучение персонала и доработать систему контроля с учетом обратной связи и выявленных сложностей',
-                defaultDate: new Date(2026, 10, 30) // 30 ноября 2026
+                title: 'Обучение сотрудников и тестирование контроля на участках',
+                tasks: [
+                    'Провести обучение сотрудников новым процедурам',
+                    'Запустить пилотную проверку на одном участке контроля',
+                    'Собрать обратную связь и зафиксировать сложности'
+                ],
+                defaultDate: new Date(2026, 10, 30)
             }, {
-                title: 'Утверждение положения о внутреннем контроле',
-                action: 'Внести изменения в учетную политику и утвердить положение о внутреннем контроле с процедурами по выявлению и снижению рисков',
-                defaultDate: new Date(2026, 11, 30) // 30 декабря 2026
+                title: 'Утверждение положения о внутреннем контроле на 2027 год с новыми требованиями',
+                tasks: [
+                    'Утвердить положение о ВК в учетной политике',
+                    'Сформировать график регулярных проверок',
+                    'Включить процедуры по выявлению и снижению рисков'
+                ],
+                defaultDate: new Date(2026, 11, 30)
             }];
 
             // Элементы
@@ -729,13 +750,11 @@
                 document.getElementById('hint5')
             ];
 
-            const stepHeaders = document.querySelectorAll('.step-header');
             const generateBtn = document.getElementById('generateBtn');
             const backBtn = document.getElementById('backBtn');
             const downloadBtn = document.getElementById('downloadBtn');
             const stepsBlock = document.getElementById('stepsBlock');
             const planBlock = document.getElementById('planBlock');
-            const planContent = document.getElementById('planContent');
             const planList = document.getElementById('planList');
             const planPeriod = document.getElementById('planPeriod');
             const planTotalTasks = document.getElementById('planTotalTasks');
@@ -815,7 +834,7 @@
                 return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
             }
 
-            // Генерация плана с действиями
+            // Генерация плана с задачами
             function generatePlan() {
                 const selected = [];
 
@@ -824,17 +843,17 @@
                         const dateVal = dateInputs[i].value;
                         selected.push({
                             index: i + 1,
-                            action: stepData[i].action,
+                            title: stepData[i].title,
+                            tasks: stepData[i].tasks,
                             date: dateVal,
-                            dateFormatted: formatDate(dateVal),
-                            daysUntil: calculateDaysUntil(dateVal)
+                            dateFormatted: formatDate(dateVal)
                         });
                     }
                 });
 
                 if (selected.length === 0) {
                     planList.innerHTML =
-                        `<div class="empty-plan">⚠️ Не выбрано ни одной задачи. Отметьте нужные шаги.</div>`;
+                        `<div class="empty-plan">Не выбрано ни одной задачи. Отметьте нужные шаги.</div>`;
                     planBadge.textContent = '0 задач';
                     planPeriod.textContent = '—';
                     planTotalTasks.textContent = '0';
@@ -844,22 +863,28 @@
                 selected.sort((a, b) => a.date.localeCompare(b.date));
 
                 let html = '';
+                let totalTasks = 0;
                 selected.forEach((item, idx) => {
-                    const daysLeft = item.daysUntil !== null ? item.daysUntil : '—';
-                    let daysClass = 'days-left';
-                    if (daysLeft !== '—' && daysLeft < 10) {
-                        daysClass += ' danger';
-                    } else if (daysLeft !== '—' && daysLeft < 20) {
-                        daysClass += ' warning';
-                    }
+                    // Заголовок шага
                     html += `
-                        <div class="plan-item">
+                        <div class="plan-item" style="background: #f8f5ef; border-radius: 8px; margin-bottom: 4px; font-weight: 600;">
                             <span class="num">${idx + 1}.</span>
-                            <span class="task">${item.action}</span>
+                            <span class="task">${item.title}</span>
                             <span class="date">${item.dateFormatted}</span>
-                            <span class="${daysClass}">${daysLeft !== '—' ? daysLeft + ' дн.' : '—'}</span>
                         </div>
                     `;
+                    
+                    // Подзадачи с нумерацией вида 1.1, 1.2, 2.1, 2.2 и т.д.
+                    item.tasks.forEach((task, taskIdx) => {
+                        const subNum = `${idx + 1}.${taskIdx + 1}`;
+                        html += `
+                            <div class="plan-item" style="padding-left: 48px;">
+                                <span class="num" style="color: #7a756d;">${subNum}</span>
+                                <span class="task" style="font-weight: 400;">${task}</span>
+                            </div>
+                        `;
+                        totalTasks++;
+                    });
                 });
 
                 const today = new Date();
@@ -868,8 +893,8 @@
 
                 planList.innerHTML = html;
                 planPeriod.textContent = periodStr;
-                planTotalTasks.textContent = selected.length;
-                planBadge.textContent = `${selected.length} задач`;
+                planTotalTasks.textContent = totalTasks;
+                planBadge.textContent = `${totalTasks} задач`;
             }
 
             // Показать блок с планом, скрыть шаги
@@ -886,39 +911,12 @@
                 updateInfo();
             }
 
-            // Скачивание PDF
+            // Скачивание PDF через window.print()
             function downloadPDF() {
-                const element = document.getElementById('planContent');
-                const originalDisplay = element.style.display;
-                
-                element.style.display = 'block';
-                
-                const opt = {
-                    margin:        [10, 10, 10, 10],
-                    filename:     'План_внедрения_внутреннего_контроля.pdf',
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, letterRendering: true, useCORS: true, logging: false },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-
-                html2pdf().set(opt).from(element).save().then(function() {
-                    element.style.display = originalDisplay;
-                }).catch(function(error) {
-                    console.error('Ошибка при создании PDF:', error);
-                    element.style.display = originalDisplay;
-                    alert('Произошла ошибка при создании PDF. Пожалуйста, попробуйте снова.');
-                });
+                window.print();
             }
 
             // Обработчики
-            stepHeaders.forEach((header, index) => {
-                header.addEventListener('click', function(e) {
-                    if (e.target.type === 'checkbox') return;
-                    const body = document.getElementById('body' + (index + 1));
-                    body.style.display = body.style.display === 'none' ? 'block' : 'none';
-                });
-            });
-
             dateInputs.forEach((input, i) => {
                 input.addEventListener('change', () => {
                     if (!stepsBlock.classList.contains('hidden')) {
