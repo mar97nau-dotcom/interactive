@@ -422,6 +422,8 @@
 
         const inputs = [currentWork, vacation, inventory, reporting, yearClose, accountingPolicy];
 
+        let isInitialized = false;
+
         function recalc() {
             const today = new Date();
             const totalDays = getDaysUntilEnd();
@@ -430,8 +432,11 @@
 
             todayDate.textContent = formatDate(today);
 
-            const autoWork = calcCurrentWork();
-            currentWork.value = autoWork;
+            // Заполняем автоматически только при первом запуске или если поле пустое
+            if (!isInitialized || currentWork.value === '' || currentWork.value === '0') {
+                currentWork.value = calcCurrentWork();
+                isInitialized = true;
+            }
 
             const cw = parseInt(currentWork.value) || 0;
             const v = parseInt(vacation.value) || 0;
@@ -473,6 +478,7 @@
             reporting.value = 8;
             yearClose.value = 10;
             accountingPolicy.value = 3;
+            isInitialized = true;
             recalc();
         }
 
@@ -487,15 +493,9 @@
 
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
-                currentWork.value = calcCurrentWork();
                 recalc();
             }
         });
-
-        setInterval(() => {
-            currentWork.value = calcCurrentWork();
-            recalc();
-        }, 30000);
 
         setTimeout(recalc, 50);
     })();
