@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пошаговый план подготовки к внутреннему контролю</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f5f3f0;
+            min-height: 100vh;
+            padding: 15px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.02);
+            padding: 1.4rem 1.8rem 1.8rem;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            color: #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 0.2rem;
+        }
+
+        h1 span {
+            font-size: 1.5rem;
+        }
+
+        .subhead {
+            color: #5e5a55;
+            font-size: 0.85rem;
+            border-left: 3px solid #c9a84c;
+            padding-left: 12px;
+            background: #fcf9f4;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.4;
+            margin-bottom: 1.2rem;
+        }
+
+        .subhead strong {
+            color: #2f2a22;
+        }
+
+        .step-group {
+            margin-bottom: 14px;
+            border-bottom: 1px solid #ece8e2;
+            padding-bottom: 12px;
+        }
+
+        .step-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .step-header input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #c9a84c;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .step-header .step-number {
+            font-weight: 700;
+            color: #c9a84c;
+            font-size: 0.8rem;
+            min-width: 24px;
+        }
+
+        .step-header label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1e1e1e;
+            cursor: pointer;
+        }
+
+        .step-header .badge {
+            background: #eae4db;
+            padding: 1px 10px;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            color: #4d4841;
+            font-weight: 500;
+            margin-left: auto;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .step-header .badge .tooltip {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: #2f2a22;
+            color: #f5f3f0;
+            font-weight: 400;
+            font-size: 0.6rem;
+            padding: 4px 10px;
+            border-radius: 8px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .step-header .badge .tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            right: 12px;
+            border: 5px solid transparent;
+            border-bottom-color: #2f2a22;
+        }
+
+        .step-header .badge:hover .tooltip {
+            display: block;
+        }
+
+        .step-body {
+            padding-left: 28px;
+            color: #3d3a34;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            display: block;
+        }
+
+        .step-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-body ul li {
+            padding: 2px 0 2px 16px;
+            position: relative;
+        }
+
+        .step-body ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #c9a84c;
+            font-weight: bold;
+        }
+
+        .step-body .result {
+            margin-top: 6px;
+            padding: 6px 12px;
+            background: #f8f5ef;
+            border-radius: 8px;
+            border-left: 3px solid #c9a84c;
+            font-weight: 500;
+            color: #2f2a22;
+            font-size: 0.78rem;
+        }
+
+        .date-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0 2px 28px;
+            flex-wrap: wrap;
+        }
+
+        .date-row label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #3d3a34;
+        }
+
+        .date-row input[type="date"] {
+            padding: 4px 10px;
+            border-radius: 30px;
+            border: 1px solid #d6cec0;
+            background: white;
+            font-size: 0.78rem;
+            color: #1c1a17;
+            outline: none;
+            transition: 0.1s;
+            min-width: 130px;
+        }
+
+        .date-row input[type="date"]:focus {
+            border-color: #c9a84c;
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+        }
+
+        .date-row .days-hint {
+            font-size: 0.7rem;
+            color: #7a756d;
+            background: #f0ece4;
+            padding: 2px 8px;
+            border-radius: 30px;
+        }
+
+        .date-row .days-hint.warning {
+            background: #f8e9d0;
+            color: #7a5d2e;
+        }
+
+        .date-row .days-hint.danger {
+            background: #f7e0da;
+            color: #873d2c;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #c9a84c;
+            color: #1e1e1e;
+        }
+
+        .btn-primary:hover {
+            background: #b8973a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px -6px rgba(201, 168, 76, 0.30);
+        }
+
+        .btn-secondary {
+            background: #f0ece4;
+            color: #3d3a34;
+            border: 1px solid #d9d0c1;
+        }
+
+        .btn-secondary:hover {
+            background: #e5dfd5;
+        }
+
+        .btn-success {
+            background: #2d7d46;
+            color: #ffffff;
+        }
+
+        .btn-success:hover {
+            background: #236837;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px -6px rgba(45, 125, 70, 0.30);
+        }
+
+        .plan-output {
+            background: #fcf9f4;
+            border-radius: 20px;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #eae3d7;
+            margin-top: 0;
+        }
+
+        .plan-output h2 {
+            font-size: 1.15rem;
+            color: #1e1e1e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .plan-output h2 .plan-badge {
+            font-size: 0.65rem;
+            font-weight: 500;
+            background: #eae4db;
+            padding: 2px 12px;
+            border-radius: 30px;
+            color: #4d4841;
+        }
+
+        .plan-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #ece8e2;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+
+        .plan-item .num {
+            font-weight: 700;
+            color: #c9a84c;
+            min-width: 24px;
+            font-size: 0.8rem;
+        }
+
+        .plan-item .task {
+            flex: 1;
+            color: #1e1e1e;
+            font-size: 0.85rem;
+        }
+
+        .plan-item .date {
+            color: #5f5a52;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            background: #f0ece4;
+            padding: 2px 10px;
+            border-radius: 30px;
+        }
+
+        .plan-item .days-left {
+            font-size: 0.7rem;
+            color: #7a756d;
+            background: #e8e3da;
+            padding: 2px 8px;
+            border-radius: 30px;
+        }
+
+        .plan-item .days-left.warning {
+            background: #f8e9d0;
+            color: #7a5d2e;
+        }
+
+        .plan-item .days-left.danger {
+            background: #f7e0da;
+            color: #873d2c;
+        }
+
+        .plan-footer {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #e2dad0;
+            font-size: 0.8rem;
+            color: #5a554c;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+        }
+
+        .empty-plan {
+            color: #7a756d;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .time-info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 22px;
+            background: #f8f5ef;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 14px;
+            border: 1px solid #eae3d7;
+            align-items: center;
+        }
+
+        .time-info-bar .label {
+            font-weight: 500;
+            color: #2f2a22;
+            font-size: 0.8rem;
+        }
+
+        .time-info-bar .value {
+            font-weight: 600;
+            color: #1e1e1e;
+            font-size: 0.85rem;
+        }
+
+        .time-info-bar .value.gold {
+            color: #c9a84c;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .back-btn-container {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .card {
+                padding: 1rem 1.2rem 1.4rem;
+            }
+            .step-body {
+                padding-left: 16px;
+            }
+            .date-row {
+                margin-left: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .plan-item {
+                flex-wrap: wrap;
+            }
+            .plan-item .date {
+                margin-left: 36px;
+            }
+            .actions {
+                flex-direction: column;
+            }
+            .btn {
+                justify-content: center;
+            }
+            .time-info-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .step-header .badge .tooltip {
+                white-space: normal;
+                min-width: 140px;
+                right: -10px;
+            }
+            .back-btn-container {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 1.2rem;
+            }
+            .plan-output {
+                padding: 1rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>
+                <span>📋</span> Пошаговый план подготовки к внутреннему контролю
+            </h1>
+            <div class="subhead">
+                <strong>Персональные сроки</strong> для каждого шага в плане
+            </div>
+
+            <!-- Информация о времени -->
+            <div class="time-info-bar">
+                <span><span class="label">📅 Период:</span> <span class="value" id="periodInfo">—</span></span>
+                <span><span class="label">📆 Всего дней:</span> <span class="value gold" id="totalDaysInfo">—</span></span>
+                <span><span class="label">✅ Выбрано задач:</span> <span class="value" id="selectedTasksInfo">0</span></span>
+            </div>
+
+            <!-- Блок с шагами (скрывается после формирования плана) -->
+            <div id="stepsBlock">
+                <!-- Шаг 1 -->
+                <div class="step-group" data-step="1">
+                    <div class="step-header">
+                        <input type="checkbox" id="step1">
+                        <span class="step-number">1.</span>
+                        <label for="step1">Экспресс-диагностика текущего контроля</label>
+                        <span class="badge">
+                            31 авг
+                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                        </span>
+                    </div>
+                    <div class="step-body" id="body1">
+                        <ul>
+                            <li>Оцените контрольные процедуры на ключевых участках (учет матзапасов, работа с первичкой, сверка расчётов)</li>
+                            <li>Проведите опрос подразделений и выборочную проверку документов за последние 3–6 месяцев, чтобы выявить типовые ошибки (например, задержки авансовых отчётов, формальные инвентаризации)</li>
+                        </ul>
+                        <div class="result">✅ Результат: перечень слабых мест и зон повышенного риска. Это ваша база для дальнейшей работы</div>
+                        <div class="date-row">
+                            <label>📅 Ваш срок:</label>
+                            <input type="date" id="date1">
+                            <span class="days-hint" id="hint1">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 2 -->
+                <div class="step-group" data-step="2">
+                    <div class="step-header">
+                        <input type="checkbox" id="step2">
+                        <span class="step-number">2.</span>
+                        <label for="step2">Распределение ответственности и доступов</label>
+                        <span class="badge">
+                            30 сен
+                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                        </span>
+                    </div>
+                    <div class="step-body" id="body2">
+                        <ul>
+                            <li>Назначьте ответственных за контрольные процедуры</li>
+                            <li>Утвердите матрицу ролей (кто что проверяет и согласовывает)</li>
+                            <li>Пропишите разграничение прав доступа к учетным системам</li>
+                            <li>Закрепите ответственных, кто будет проводить контроль по каждому риску (кто проверяет первичку, кто контролирует лимиты, кто ведёт претензионную работу)</li>
+                        </ul>
+                        <div class="result">✅ Результат: приказ о назначении ответственных и матрица ответственности, в которой будет четко зафиксировано, кто за что отвечает</div>
+                        <div class="date-row">
+                            <label>📅 Ваш срок:</label>
+                            <input type="date" id="date2">
+                            <span class="days-hint" id="hint2">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 3 -->
+                <div class="step-group" data-step="3">
+                    <div class="step-header">
+                        <input type="checkbox" id="step3">
+                        <span class="step-number">3.</span>
+                        <label for="step3">Доработка регламентов под новые требования</label>
+                        <span class="badge">
+                            31 окт
+                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                        </span>
+                    </div>
+                    <div class="step-body" id="body3">
+                        <ul>
+                            <li>Приведите внутренние регламенты и контрольные процедуры в соответствие с новыми стандартами и учетом электронного документооборота</li>
+                            <li>Отработайте на одном участке (например, учёт матзапасов) контрольные процедуры по выявленным рискам, зафиксируйте отклонения и доработайте регламенты</li>
+                        </ul>
+                        <div class="result">✅ Результат: Обновлённые регламенты с прописанными шагами контроля, сроками и формами фиксации результатов</div>
+                        <div class="date-row">
+                            <label>📅 Ваш срок:</label>
+                            <input type="date" id="date3">
+                            <span class="days-hint" id="hint3">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 4 -->
+                <div class="step-group" data-step="4">
+                    <div class="step-header">
+                        <input type="checkbox" id="step4">
+                        <span class="step-number">4.</span>
+                        <label for="step4">Обучение сотрудников</label>
+                        <span class="badge">
+                            30 ноя
+                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                        </span>
+                    </div>
+                    <div class="step-body" id="body4">
+                        <ul>
+                            <li>Проведите обучение сотрудников новым процедурам</li>
+                            <li>Запустите пилотную проверку на одном участке контроля</li>
+                            <li>Соберите обратную связь, зафиксируйте сложности и точки доработки</li>
+                        </ul>
+                        <div class="result">✅ Результат: выводы и списки корректировок – система доработана с учетом реальных рабочих ситуаций</div>
+                        <div class="date-row">
+                            <label>📅 Ваш срок:</label>
+                            <input type="date" id="date4">
+                            <span class="days-hint" id="hint4">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 5 -->
+                <div class="step-group" data-step="5">
+                    <div class="step-header">
+                        <input type="checkbox" id="step5">
+                        <span class="step-number">5.</span>
+                        <label for="step5">Утверждение положения о внутреннем контроле</label>
+                        <span class="badge">
+                            31 дек
+                            <span class="tooltip">⏱️ Рекомендуемый срок</span>
+                        </span>
+                    </div>
+                    <div class="step-body" id="body5">
+                        <ul>
+                            <li>Утвердите положение о ВК в своей учётной политике</li>
+                            <li>Сформируйте график регулярных проверок и контрольных мероприятий</li>
+                            <li>Включите в положение о внутреннем контроле процедуры по выявлению и снижению этих рисков (сроки, формы, периодичность сверок, порядок фиксации расхождений)</li>
+                        </ul>
+                        <div class="result">✅ Результат: актуальное положение о внутреннем контроле, которое полностью соответствует новым требованиям</div>
+                        <div class="date-row">
+                            <label>📅 Ваш срок:</label>
+                            <input type="date" id="date5">
+                            <span class="days-hint" id="hint5">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" id="generateBtn">📄 Сформировать план</button>
+                </div>
+            </div>
+
+            <!-- Блок с планом (изначально скрыт) -->
+            <div id="planBlock" class="hidden">
+                <div class="plan-output" id="planContent">
+                    <h2>
+                        📋 Ваш план внедрения
+                        <span class="plan-badge" id="planBadge">5 задач</span>
+                    </h2>
+                    <div id="planList"></div>
+                    <div class="plan-footer" id="planFooter">
+                        <span>📅 Период: <span id="planPeriod">—</span></span>
+                        <span>📊 Всего задач: <span id="planTotalTasks">—</span></span>
+                    </div>
+                </div>
+                <div class="back-btn-container">
+                    <button class="btn btn-secondary" id="backBtn">← Вернуться к редактированию</button>
+                    <button class="btn btn-success" id="downloadBtn">⬇ Скачать план (PDF)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Расчёт календарных дней от текущей даты до 31 декабря
+            function calculateTotalDays() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const endDate = new Date(today.getFullYear(), 11, 31);
+                endDate.setHours(0, 0, 0, 0);
+
+                if (today > endDate) return 0;
+
+                const diffTime = endDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                return diffDays;
+            }
+
+            const TOTAL_CALENDAR_DAYS = calculateTotalDays();
+
+            // Функция для добавления рабочих дней (пн-пт)
+            function addWorkingDays(startDate, days) {
+                const date = new Date(startDate);
+                let addedDays = 0;
+                while (addedDays < days) {
+                    date.setDate(date.getDate() + 1);
+                    const dayOfWeek = date.getDay();
+                    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                        addedDays++;
+                    }
+                }
+                return date;
+            }
+
+            // Данные шагов
+            const stepData = [{
+                title: 'Экспресс-диагностика текущего контроля',
+                action: 'Определить перечень слабых мест и зон повышенного риска в учете',
+                defaultDate: null // будет вычислено динамически
+            }, {
+                title: 'Распределение ответственности и доступов',
+                action: 'Утвердить приказ о назначении ответственных и матрицу ответственности с четким распределением зон контроля',
+                defaultDate: new Date(2026, 8, 30) // 30 сентября 2026
+            }, {
+                title: 'Доработка регламентов под новые требования',
+                action: 'Актуализировать внутренние регламенты с прописанными шагами контроля, сроками и формами фиксации результатов',
+                defaultDate: new Date(2026, 9, 31) // 31 октября 2026
+            }, {
+                title: 'Обучение сотрудников',
+                action: 'Провести обучение персонала и доработать систему контроля с учетом обратной связи и выявленных сложностей',
+                defaultDate: new Date(2026, 10, 30) // 30 ноября 2026
+            }, {
+                title: 'Утверждение положения о внутреннем контроле',
+                action: 'Внести изменения в учетную политику и утвердить положение о внутреннем контроле с процедурами по выявлению и снижению рисков',
+                defaultDate: new Date(2026, 11, 30) // 30 декабря 2026
+            }];
+
+            // Элементы
+            const totalDaysInfo = document.getElementById('totalDaysInfo');
+            const periodInfo = document.getElementById('periodInfo');
+            const selectedTasksInfo = document.getElementById('selectedTasksInfo');
+
+            // Шаги
+            const stepCheckboxes = [
+                document.getElementById('step1'),
+                document.getElementById('step2'),
+                document.getElementById('step3'),
+                document.getElementById('step4'),
+                document.getElementById('step5')
+            ];
+
+            const dateInputs = [
+                document.getElementById('date1'),
+                document.getElementById('date2'),
+                document.getElementById('date3'),
+                document.getElementById('date4'),
+                document.getElementById('date5')
+            ];
+
+            const hints = [
+                document.getElementById('hint1'),
+                document.getElementById('hint2'),
+                document.getElementById('hint3'),
+                document.getElementById('hint4'),
+                document.getElementById('hint5')
+            ];
+
+            const stepHeaders = document.querySelectorAll('.step-header');
+            const generateBtn = document.getElementById('generateBtn');
+            const backBtn = document.getElementById('backBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const stepsBlock = document.getElementById('stepsBlock');
+            const planBlock = document.getElementById('planBlock');
+            const planContent = document.getElementById('planContent');
+            const planList = document.getElementById('planList');
+            const planPeriod = document.getElementById('planPeriod');
+            const planTotalTasks = document.getElementById('planTotalTasks');
+            const planBadge = document.getElementById('planBadge');
+
+            // Установка дефолтных дат
+            function setDefaultDates() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                dateInputs.forEach((input, i) => {
+                    if (!input.value) {
+                        let targetDate;
+                        if (i === 0) {
+                            targetDate = addWorkingDays(today, 10);
+                        } else {
+                            targetDate = stepData[i].defaultDate;
+                        }
+                        const year = targetDate.getFullYear();
+                        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+                        const day = String(targetDate.getDate()).padStart(2, '0');
+                        input.value = `${year}-${month}-${day}`;
+                    }
+                });
+            }
+
+            // Получение отформатированной даты
+            function getFormattedDate(date) {
+                return date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+            }
+
+            // Обновление информации
+            function updateInfo() {
+                const selectedCount = stepCheckboxes.filter(cb => cb.checked).length;
+
+                const today = new Date();
+                const endDate = new Date(today.getFullYear(), 11, 31);
+
+                periodInfo.textContent = `${getFormattedDate(today)} — ${getFormattedDate(endDate)}`;
+                totalDaysInfo.textContent = TOTAL_CALENDAR_DAYS;
+                selectedTasksInfo.textContent = selectedCount;
+
+                dateInputs.forEach((input, i) => {
+                    if (input.value) {
+                        const daysUntil = calculateDaysUntil(input.value);
+                        const hintEl = hints[i];
+                        if (daysUntil !== null) {
+                            hintEl.textContent = `${daysUntil} дн.`;
+                            hintEl.className = 'days-hint';
+                            if (daysUntil < 10) {
+                                hintEl.classList.add('danger');
+                            } else if (daysUntil < 20) {
+                                hintEl.classList.add('warning');
+                            }
+                        } else {
+                            hintEl.textContent = '—';
+                            hintEl.className = 'days-hint';
+                        }
+                    }
+                });
+
+                return { selectedCount };
+            }
+
+            function calculateDaysUntil(dateStr) {
+                if (!dateStr) return null;
+                const target = new Date(dateStr + 'T00:00:00');
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+                const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+                return diff >= 0 ? diff : 0;
+            }
+
+            function formatDate(dateStr) {
+                if (!dateStr) return 'не указана';
+                const d = new Date(dateStr + 'T00:00:00');
+                return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+            }
+
+            // Генерация плана с действиями
+            function generatePlan() {
+                const selected = [];
+
+                stepCheckboxes.forEach((cb, i) => {
+                    if (cb.checked) {
+                        const dateVal = dateInputs[i].value;
+                        selected.push({
+                            index: i + 1,
+                            action: stepData[i].action,
+                            date: dateVal,
+                            dateFormatted: formatDate(dateVal),
+                            daysUntil: calculateDaysUntil(dateVal)
+                        });
+                    }
+                });
+
+                if (selected.length === 0) {
+                    planList.innerHTML =
+                        `<div class="empty-plan">⚠️ Не выбрано ни одной задачи. Отметьте нужные шаги.</div>`;
+                    planBadge.textContent = '0 задач';
+                    planPeriod.textContent = '—';
+                    planTotalTasks.textContent = '0';
+                    return;
+                }
+
+                selected.sort((a, b) => a.date.localeCompare(b.date));
+
+                let html = '';
+                selected.forEach((item, idx) => {
+                    const daysLeft = item.daysUntil !== null ? item.daysUntil : '—';
+                    let daysClass = 'days-left';
+                    if (daysLeft !== '—' && daysLeft < 10) {
+                        daysClass += ' danger';
+                    } else if (daysLeft !== '—' && daysLeft < 20) {
+                        daysClass += ' warning';
+                    }
+                    html += `
+                        <div class="plan-item">
+                            <span class="num">${idx + 1}.</span>
+                            <span class="task">${item.action}</span>
+                            <span class="date">${item.dateFormatted}</span>
+                            <span class="${daysClass}">${daysLeft !== '—' ? daysLeft + ' дн.' : '—'}</span>
+                        </div>
+                    `;
+                });
+
+                const today = new Date();
+                const endDate = new Date(today.getFullYear(), 11, 31);
+                const periodStr = `${getFormattedDate(today)} — ${getFormattedDate(endDate)}`;
+
+                planList.innerHTML = html;
+                planPeriod.textContent = periodStr;
+                planTotalTasks.textContent = selected.length;
+                planBadge.textContent = `${selected.length} задач`;
+            }
+
+            // Показать блок с планом, скрыть шаги
+            function showPlan() {
+                generatePlan();
+                stepsBlock.classList.add('hidden');
+                planBlock.classList.remove('hidden');
+            }
+
+            // Показать шаги, скрыть план
+            function showSteps() {
+                stepsBlock.classList.remove('hidden');
+                planBlock.classList.add('hidden');
+                updateInfo();
+            }
+
+            // Скачивание PDF
+            function downloadPDF() {
+                const element = document.getElementById('planContent');
+                const originalDisplay = element.style.display;
+                
+                element.style.display = 'block';
+                
+                const opt = {
+                    margin:        [10, 10, 10, 10],
+                    filename:     'План_внедрения_внутреннего_контроля.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, letterRendering: true, useCORS: true, logging: false },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(element).save().then(function() {
+                    element.style.display = originalDisplay;
+                }).catch(function(error) {
+                    console.error('Ошибка при создании PDF:', error);
+                    element.style.display = originalDisplay;
+                    alert('Произошла ошибка при создании PDF. Пожалуйста, попробуйте снова.');
+                });
+            }
+
+            // Обработчики
+            stepHeaders.forEach((header, index) => {
+                header.addEventListener('click', function(e) {
+                    if (e.target.type === 'checkbox') return;
+                    const body = document.getElementById('body' + (index + 1));
+                    body.style.display = body.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+
+            dateInputs.forEach((input, i) => {
+                input.addEventListener('change', () => {
+                    if (!stepsBlock.classList.contains('hidden')) {
+                        updateInfo();
+                    }
+                });
+            });
+
+            stepCheckboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    if (!stepsBlock.classList.contains('hidden')) {
+                        updateInfo();
+                    }
+                });
+            });
+
+            generateBtn.addEventListener('click', showPlan);
+            backBtn.addEventListener('click', showSteps);
+            downloadBtn.addEventListener('click', downloadPDF);
+
+            // Инициализация
+            window.addEventListener('DOMContentLoaded', function() {
+                setDefaultDates();
+                updateInfo();
+            });
+
+            setTimeout(() => {
+                setDefaultDates();
+                updateInfo();
+            }, 50);
+        })();
+    </script>
+
+</body>
+</html>
